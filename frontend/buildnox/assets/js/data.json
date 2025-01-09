@@ -1,0 +1,14 @@
+{
+  "address": "35B Lord Lugard Street, Area 11, Garki, Abuja.",
+  "phone_number_one": "+(234) 803 505 0592",
+  "phone_number_one_link": "+2348035050592",
+  "phone_number_two": "+(234) 813 331 0871",
+  "phone_number_two_link": "+2348133310871",
+  "email": "info@homadil.com",
+  "facebook" : "http://facebook.com",
+  "instagram":"http://facebook.com",
+  "twitter":"http://facebook.com",
+  "google":"http://facebook.com",
+  "linkedin": "http://facebook.com",
+  "BackendURL" :"http://localhost:5000"
+}

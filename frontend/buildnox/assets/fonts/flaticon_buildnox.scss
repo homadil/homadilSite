@@ -1,0 +1,269 @@
+$flaticon_buildnox-font: "flaticon_buildnox";
+
+@font-face {
+    font-family: $flaticon_buildnox-font;
+    src: url("./flaticon_buildnox.ttf?45d89b1ea16c2039a41de78fa685176c") format("truetype"),
+url("./flaticon_buildnox.woff?45d89b1ea16c2039a41de78fa685176c") format("woff"),
+url("./flaticon_buildnox.woff2?45d89b1ea16c2039a41de78fa685176c") format("woff2"),
+url("./flaticon_buildnox.eot?45d89b1ea16c2039a41de78fa685176c#iefix") format("embedded-opentype"),
+url("./flaticon_buildnox.svg?45d89b1ea16c2039a41de78fa685176c#flaticon_buildnox") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon_buildnox !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon_buildnox-map: (
+    "001-sketch": "\f101",
+    "002-construction": "\f102",
+    "003-roof": "\f103",
+    "004-interior-design": "\f104",
+    "005-maintenance": "\f105",
+    "006-renovation": "\f106",
+    "007-remodeling": "\f107",
+    "008-engineer": "\f108",
+    "009-trowel": "\f109",
+    "010-worker": "\f10a",
+    "011-guarantee": "\f10b",
+    "012-folder-management": "\f10c",
+    "013-quotation": "\f10d",
+    "014-zoom": "\f10e",
+    "015-link": "\f10f",
+    "016-share": "\f110",
+    "017-worker-1": "\f111",
+    "018-building": "\f112",
+    "019-skyscrapers": "\f113",
+    "020-building-1": "\f114",
+    "021-budget": "\f115",
+    "022-newspaper": "\f116",
+    "023-telephone": "\f117",
+    "024-blueprint": "\f118",
+    "025-interior-design-1": "\f119",
+    "026-architecture": "\f11a",
+    "027-planning": "\f11b",
+    "028-check-list": "\f11c",
+    "029-measure": "\f11d",
+    "030-cube": "\f11e",
+    "031-engineer-1": "\f11f",
+    "032-apartment": "\f120",
+    "033-back-button": "\f121",
+    "034-right": "\f122",
+    "035-right-1": "\f123",
+    "036-check-mark": "\f124",
+    "037-search": "\f125",
+    "038-close-circular-button-symbol": "\f126",
+    "039-menu": "\f127",
+    "040-left-arrow-line-symbol": "\f128",
+    "041-right-arrow-angle": "\f129",
+    "042-checkmark-verify-interface-symbol-button": "\f12a",
+    "043-recycling-bin": "\f12b",
+    "044-magnifying-glass": "\f12c",
+    "045-play-button": "\f12d",
+    "046-magnifiying-glass": "\f12e",
+    "047-fast-forward": "\f12f",
+    "048-next": "\f130",
+    "049-right-arrow": "\f131",
+    "050-right-arrow-1": "\f132",
+    "051-checkmark": "\f133",
+    "052-comment": "\f134",
+    "053-next-1": "\f135",
+    "054-back": "\f136",
+    "055-plus": "\f137",
+    "056-minus": "\f138",
+    "057-cancel": "\f139",
+    "058-map": "\f13a",
+    "059-telephone-1": "\f13b",
+    "060-message": "\f13c",
+    "061-right-arrow-2": "\f13d",
+);
+
+.flaticon-001-sketch:before {
+    content: map-get($flaticon_buildnox-map, "001-sketch");
+}
+.flaticon-002-construction:before {
+    content: map-get($flaticon_buildnox-map, "002-construction");
+}
+.flaticon-003-roof:before {
+    content: map-get($flaticon_buildnox-map, "003-roof");
+}
+.flaticon-004-interior-design:before {
+    content: map-get($flaticon_buildnox-map, "004-interior-design");
+}
+.flaticon-005-maintenance:before {
+    content: map-get($flaticon_buildnox-map, "005-maintenance");
+}
+.flaticon-006-renovation:before {
+    content: map-get($flaticon_buildnox-map, "006-renovation");
+}
+.flaticon-007-remodeling:before {
+    content: map-get($flaticon_buildnox-map, "007-remodeling");
+}
+.flaticon-008-engineer:before {
+    content: map-get($flaticon_buildnox-map, "008-engineer");
+}
+.flaticon-009-trowel:before {
+    content: map-get($flaticon_buildnox-map, "009-trowel");
+}
+.flaticon-010-worker:before {
+    content: map-get($flaticon_buildnox-map, "010-worker");
+}
+.flaticon-011-guarantee:before {
+    content: map-get($flaticon_buildnox-map, "011-guarantee");
+}
+.flaticon-012-folder-management:before {
+    content: map-get($flaticon_buildnox-map, "012-folder-management");
+}
+.flaticon-013-quotation:before {
+    content: map-get($flaticon_buildnox-map, "013-quotation");
+}
+.flaticon-014-zoom:before {
+    content: map-get($flaticon_buildnox-map, "014-zoom");
+}
+.flaticon-015-link:before {
+    content: map-get($flaticon_buildnox-map, "015-link");
+}
+.flaticon-016-share:before {
+    content: map-get($flaticon_buildnox-map, "016-share");
+}
+.flaticon-017-worker-1:before {
+    content: map-get($flaticon_buildnox-map, "017-worker-1");
+}
+.flaticon-018-building:before {
+    content: map-get($flaticon_buildnox-map, "018-building");
+}
+.flaticon-019-skyscrapers:before {
+    content: map-get($flaticon_buildnox-map, "019-skyscrapers");
+}
+.flaticon-020-building-1:before {
+    content: map-get($flaticon_buildnox-map, "020-building-1");
+}
+.flaticon-021-budget:before {
+    content: map-get($flaticon_buildnox-map, "021-budget");
+}
+.flaticon-022-newspaper:before {
+    content: map-get($flaticon_buildnox-map, "022-newspaper");
+}
+.flaticon-023-telephone:before {
+    content: map-get($flaticon_buildnox-map, "023-telephone");
+}
+.flaticon-024-blueprint:before {
+    content: map-get($flaticon_buildnox-map, "024-blueprint");
+}
+.flaticon-025-interior-design-1:before {
+    content: map-get($flaticon_buildnox-map, "025-interior-design-1");
+}
+.flaticon-026-architecture:before {
+    content: map-get($flaticon_buildnox-map, "026-architecture");
+}
+.flaticon-027-planning:before {
+    content: map-get($flaticon_buildnox-map, "027-planning");
+}
+.flaticon-028-check-list:before {
+    content: map-get($flaticon_buildnox-map, "028-check-list");
+}
+.flaticon-029-measure:before {
+    content: map-get($flaticon_buildnox-map, "029-measure");
+}
+.flaticon-030-cube:before {
+    content: map-get($flaticon_buildnox-map, "030-cube");
+}
+.flaticon-031-engineer-1:before {
+    content: map-get($flaticon_buildnox-map, "031-engineer-1");
+}
+.flaticon-032-apartment:before {
+    content: map-get($flaticon_buildnox-map, "032-apartment");
+}
+.flaticon-033-back-button:before {
+    content: map-get($flaticon_buildnox-map, "033-back-button");
+}
+.flaticon-034-right:before {
+    content: map-get($flaticon_buildnox-map, "034-right");
+}
+.flaticon-035-right-1:before {
+    content: map-get($flaticon_buildnox-map, "035-right-1");
+}
+.flaticon-036-check-mark:before {
+    content: map-get($flaticon_buildnox-map, "036-check-mark");
+}
+.flaticon-037-search:before {
+    content: map-get($flaticon_buildnox-map, "037-search");
+}
+.flaticon-038-close-circular-button-symbol:before {
+    content: map-get($flaticon_buildnox-map, "038-close-circular-button-symbol");
+}
+.flaticon-039-menu:before {
+    content: map-get($flaticon_buildnox-map, "039-menu");
+}
+.flaticon-040-left-arrow-line-symbol:before {
+    content: map-get($flaticon_buildnox-map, "040-left-arrow-line-symbol");
+}
+.flaticon-041-right-arrow-angle:before {
+    content: map-get($flaticon_buildnox-map, "041-right-arrow-angle");
+}
+.flaticon-042-checkmark-verify-interface-symbol-button:before {
+    content: map-get($flaticon_buildnox-map, "042-checkmark-verify-interface-symbol-button");
+}
+.flaticon-043-recycling-bin:before {
+    content: map-get($flaticon_buildnox-map, "043-recycling-bin");
+}
+.flaticon-044-magnifying-glass:before {
+    content: map-get($flaticon_buildnox-map, "044-magnifying-glass");
+}
+.flaticon-045-play-button:before {
+    content: map-get($flaticon_buildnox-map, "045-play-button");
+}
+.flaticon-046-magnifiying-glass:before {
+    content: map-get($flaticon_buildnox-map, "046-magnifiying-glass");
+}
+.flaticon-047-fast-forward:before {
+    content: map-get($flaticon_buildnox-map, "047-fast-forward");
+}
+.flaticon-048-next:before {
+    content: map-get($flaticon_buildnox-map, "048-next");
+}
+.flaticon-049-right-arrow:before {
+    content: map-get($flaticon_buildnox-map, "049-right-arrow");
+}
+.flaticon-050-right-arrow-1:before {
+    content: map-get($flaticon_buildnox-map, "050-right-arrow-1");
+}
+.flaticon-051-checkmark:before {
+    content: map-get($flaticon_buildnox-map, "051-checkmark");
+}
+.flaticon-052-comment:before {
+    content: map-get($flaticon_buildnox-map, "052-comment");
+}
+.flaticon-053-next-1:before {
+    content: map-get($flaticon_buildnox-map, "053-next-1");
+}
+.flaticon-054-back:before {
+    content: map-get($flaticon_buildnox-map, "054-back");
+}
+.flaticon-055-plus:before {
+    content: map-get($flaticon_buildnox-map, "055-plus");
+}
+.flaticon-056-minus:before {
+    content: map-get($flaticon_buildnox-map, "056-minus");
+}
+.flaticon-057-cancel:before {
+    content: map-get($flaticon_buildnox-map, "057-cancel");
+}
+.flaticon-058-map:before {
+    content: map-get($flaticon_buildnox-map, "058-map");
+}
+.flaticon-059-telephone-1:before {
+    content: map-get($flaticon_buildnox-map, "059-telephone-1");
+}
+.flaticon-060-message:before {
+    content: map-get($flaticon_buildnox-map, "060-message");
+}
+.flaticon-061-right-arrow-2:before {
+    content: map-get($flaticon_buildnox-map, "061-right-arrow-2");
+}

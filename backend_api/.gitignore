@@ -1,0 +1,5 @@
+# Ignore .env file
+.env
+node_modules/
+*.zip
+public/images

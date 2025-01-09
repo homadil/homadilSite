@@ -1,0 +1,41 @@
+{
+ 
+    "first":[
+        {
+      "question": "What services does Homadil provide?",
+      "answer": "We specialize in real estate development, construction, site and service solutions, property management, and brokerage. From design to delivery, we offer end-to-end solutions tailored to your needs."
+    },
+    {
+         "question":"How do I start a project with Homadil?",
+          "answer": "Simply contact us with your idea or requirements, and our team will guide you through the design, planning, and construction process step-by-step."
+    },
+    {
+         "question":"Do you handle planning permissions and regulations?",
+          "answer": "Yes, we manage all aspects of planning permissions and building regulations to ensure a smooth and compliant construction process."
+    },
+    {
+         "question":"What types of properties do you work on?",
+          "answer": "We work on a variety of projects, including luxury homes, apartment complexes, commercial properties, HMO conversions, and renovations."
+    }
+  
+    ],
+    "second":[
+          {
+         "question":"Can I customize my project?",
+          "answer": "Absolutely! We offer bespoke services to ensure your project is tailored to your vision and specific requirements."
+    },
+    {
+         "question":"Do you offer property management services?",
+          "answer": "Yes, we provide property management solutions to help maximize value, retain tenants, and ensure smooth operations for your real estate assets."
+    },
+    {
+         "question":"Where are your properties located?",
+          "answer": "Our projects are located in prime areas across Nigeria, with options tailored to suit both commercial and residential needs."
+    },
+    {
+         "question":"How can I contact Homadil for inquiries?",
+          "answer": "You can reach us via our website contact form, email, or phone. Our team is always ready to assist you with any questions or project discussions."
+    }
+    ]
+  
+}
