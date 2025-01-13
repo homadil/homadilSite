@@ -7,6 +7,7 @@ const Category = require("../database/models/Category");
 const Url = require("../database/models/Url");
 const Comment = require("../database/models/Comment");
 const EstateMedia = require("../database/models/EstateMedia");
+const Project = require("../database/models/Project");
 
 exports.create = async (req, res) => {
   const transaction = await Estate.sequelize.transaction(); // Start a transaction
@@ -141,12 +142,26 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Fetch the Estate by ID
     const estate = await Estate.findByPk(id);
 
     if (!estate) {
       return res.status(404).json({ message: "Estate not found." });
     }
-    return res.status(200).json(estate);
+
+    // Fetch all Projects associated with the Estate
+    const projects = await Project.findAll({
+      where: { estateId: estate.id },
+    });
+
+    // Add the projects to the estate object
+    const result = {
+      ...estate.toJSON(), // Convert the Estate instance to a plain object
+      projects, // Attach the fetched projects
+    };
+
+    return res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching Estate:", error);
     return res.status(500).json({ message: "Error fetching Estate.", error });

@@ -10,8 +10,9 @@ const {
   FAQValidationRules,
   ContactValidationRules,
   AppointmentValidationRules,
+  OfferLetterValidationRules,
 } = require("../middleware/validations/extra");
-const Appointment = require("../database/models/Appointment");
+const upload = require("../config/multerConfig");
 
 router.post("/faq", FAQValidationRules, returnValidation, Extra.faq);
 
@@ -20,6 +21,18 @@ router.post(
   ContactValidationRules,
   returnValidation,
   Extra.contact
+);
+
+router.post(
+  "/offer_letter",
+  upload,
+  (req, res, next) => {
+    console.log(req.body);
+    next();
+  },
+  OfferLetterValidationRules,
+  returnValidation,
+  Extra.offer_letter
 );
 
 router.post(

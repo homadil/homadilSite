@@ -190,10 +190,40 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const project = await Project.findByPk(id);
+
+    // Fetch project with associations
+    const project = await Project.findByPk(id, {
+      include: [
+        {
+          model: Location,
+          as: "location", // Ensure this alias matches your association definition
+        },
+        {
+          model: Category,
+          through: { attributes: [] }, // Include categories via ProjectCategories association
+        },
+        {
+          model: Tag,
+          through: { attributes: [] }, // Include tags via ProjectTag association
+        },
+        {
+          model: Url,
+          through: { attributes: [] }, // Include URLs via ProjectUrl association
+        },
+        {
+          model: Comment,
+          through: { attributes: [] }, // Include comments via ProjectComment association
+        },
+        {
+          model: Media, // Include media directly
+        },
+      ],
+    });
+
     if (!project) {
       return res.status(404).json({ message: "Project not found." });
     }
+
     return res.status(200).json(project);
   } catch (error) {
     console.error("Error fetching project:", error);
@@ -404,6 +434,43 @@ exports.partialUpdate = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error partially updating project.", error });
+  }
+};
+
+exports.updateSold = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { sold } = req.body;
+
+    // Validate if the "sold" field is provided
+    if (typeof sold === "undefined") {
+      return res.status(400).json({ message: '"sold" field is required.' });
+    }
+
+    // Update only the "sold" field
+    const [updatedRows] = await Project.update(
+      { sold },
+      {
+        where: { id },
+      }
+    );
+
+    // Check if any rows were updated
+    if (updatedRows === 0) {
+      return res.status(404).json({ message: "Project not found." });
+    }
+
+    return res.status(200).json({
+      sold,
+      updatedRows,
+      message: "Project sold status updated successfully.",
+    });
+  } catch (error) {
+    console.error("Error updating sold status:", error);
+    return res.status(500).json({
+      message: "Error updating sold status.",
+      error: error.message,
+    });
   }
 };
 

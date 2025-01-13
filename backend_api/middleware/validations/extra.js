@@ -16,6 +16,19 @@ exports.ContactValidationRules = [
   check("question").notEmpty().withMessage("Question is required"),
 ];
 
+exports.OfferLetterValidationRules = [
+  // name is required for both create and update
+  check("name")
+    .notEmpty()
+    .withMessage("Name is required.")
+    .isString()
+    .withMessage("Name must be a string."),
+  check("email").isEmail().withMessage("Email is required"),
+  check("show").optional().isString().withMessage("Proof must be a string."),
+  check("number").notEmpty().withMessage("Phone Number is required"),
+  check("message").notEmpty().withMessage("message is required"),
+];
+
 exports.AppointmentValidationRules = [
   // Name is required
   check("name").notEmpty().withMessage("Name is required"),

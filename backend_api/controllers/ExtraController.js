@@ -2,6 +2,7 @@ const FAQ = require("../database/models/FAQ");
 const Contact = require("../database/models/Contact");
 const Appointment = require("../database/models/Appointment");
 const Newsletter = require("../database/models/Newsletter");
+const OfferLetter = require("../database/models/OfferLetter");
 
 // CREATE - Add a new category
 const faq = async (req, res) => {
@@ -25,6 +26,41 @@ const contact = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+};
+
+const offer_letter = async (req, res) => {
+  const transaction = await OfferLetter.sequelize.transaction(); // Start a transaction
+  try {
+    const data = req.body;
+
+    // Create the OfferLetter record
+    await OfferLetter.create(
+      {
+        name: data?.name,
+        email: data?.email,
+        number: data?.number,
+        message: data?.message,
+        show: req.files?.show
+          ? req.files["show"][0].path.replace(/^public[\\/]/, "")
+          : null, // Assuming 'show' is a file
+      },
+      { transaction } // Pass the transaction object to ensure the operation is part of the transaction
+    );
+
+    // Commit the transaction
+    await transaction.commit();
+
+    // Send success response
+    return res.status(201).json({ msg: "Offer Letter created successfully" });
+  } catch (error) {
+    console.error("Error creating Offer Letter:", error);
+
+    // Rollback transaction on error
+    await transaction.rollback();
+
+    // Return error response
+    return res.status(500).json({ error: "Offer Letter creation failed" });
   }
 };
 
@@ -61,4 +97,5 @@ module.exports = {
   contact,
   appointment,
   newsletter,
+  offer_letter,
 };

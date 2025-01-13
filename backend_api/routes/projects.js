@@ -16,6 +16,8 @@ router.post(
   Project.create
 );
 
+router.put("/sold/:id", Project.updateSold);
+
 // READ - Get all blogs
 router.get("/", Project.getAll);
 

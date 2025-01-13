@@ -87,7 +87,7 @@
                           <a href="services.html">Services</a>
                         </li>
                         <li>
-                          <a href="projects2.html">Listing</a>
+                          <a href="estate.html">Listing</a>
                         </li>
                         <li>
                           <a href="blog-standard.html">News</a>
@@ -329,10 +329,15 @@
             <!-- Newsletter Widget -->
             <div class="newsletter-widget">
               <h4 class="fs_22 fw_medium mb_20">Newsletter Subscription</h4>
-              <form action="#">
-                <input type="email" placeholder="Enter Email Address" />
+              <form action="#" id="newletter_send_form">
+                <input
+                  type="email"
+                  id="newletter_send_email"
+                  placeholder="Enter Email Address"
+                />
                 <button
                   type="submit"
+                  id="newletter_send_btn"
                   class="btn-1 pt_18 pb_15 mb_4 pl_30 pr_30 ff_sec fw_bold tt_u fs_14 ls_1"
                 >
                   Subscribe Us <i class="flaticon-right-arrow-1"></i
@@ -429,28 +434,6 @@
                 Talking About <br />
                 Homadil Realty ?
               </h2>
-            </div>
-
-            <div class="col-lg-4">
-              <div class="testimonials-1-block alt">
-                <div class="testimonials-1-top-content">
-                  <div class="testimonials-1-quote">
-                    <i class="flaticon-quotation"></i>
-                  </div>
-                  <div class="testimonials-1-desc">
-                    Homadil’s innovative approach to construction truly
-                    impressed me. The boutique hotel they renovated for us is
-                    now the talk of the town. Highly recommended!
-                  </div>
-                </div>
-                <div class="testimonials-1-author">
-                  <div class="testimonials-1-author-image">
-                    <img src="../assets/images/dummy/test5.jpg" alt="" />
-                  </div>
-                  <div class="testimonials-1-author-title alt">Chinwe E.</div>
-                  <div class="testimonials-1-designation">Customer</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -587,12 +570,13 @@
                     Get latest updates and offers.
                   </p>
                   <div class="footer-newsletter mb_25">
-                    <form>
+                    <form id="footer_form">
                       <input
                         type="email"
+                        id="footer_email"
                         placeholder="Enter your email address"
                       />
-                      <button class="btn-1">
+                      <button class="btn-1" id="footer_btn">
                         <i class="fas fa-paper-plane"></i> <span></span>
                       </button>
                     </form>

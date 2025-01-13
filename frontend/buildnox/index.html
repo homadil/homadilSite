@@ -87,7 +87,7 @@
                           <a href="pages/services.html">Services</a>
                         </li>
                         <li>
-                          <a href="pages/projects2.html">Listing</a>
+                          <a href="pages/estate.html">Listing</a>
                         </li>
                         <li>
                           <a href="pages/blog-standard.html">News</a>
@@ -327,10 +327,15 @@
             <!-- Newsletter Widget -->
             <div class="newsletter-widget">
               <h4 class="fs_22 fw_medium mb_20">Newsletter Subscription</h4>
-              <form action="#">
-                <input type="email" placeholder="Enter Email Address" />
+              <form action="#" id="newletter_send_form">
+                <input
+                  type="email"
+                  id="newletter_send_email"
+                  placeholder="Enter Email Address"
+                />
                 <button
                   type="submit"
+                  id="newletter_send_btn"
                   class="btn-1 pt_18 pb_15 mb_4 pl_30 pr_30 ff_sec fw_bold tt_u fs_14 ls_1"
                 >
                   Subscribe Us <i class="flaticon-right-arrow-1"></i
@@ -1066,54 +1071,8 @@
             </div>
             <div class="col-lg-8">
               <div class="swiper-container two-item-carousel">
-                <div class="swiper-wrapper">
-                  <!-- Slide Item -->
-                  <div class="swiper-slide">
-                    <div class="testimonials-1-block">
-                      <div class="testimonials-1-top-content">
-                        <div class="testimonials-1-quote">
-                          <i class="flaticon-quotation"></i>
-                        </div>
-                        <div class="testimonials-1-desc">
-                          Homadil made my dream home a reality! From start to
-                          finish, their team was professional, attentive, and
-                          committed to excellence. I couldn’t have asked for a
-                          better experience.
-                        </div>
-                      </div>
-                      <div class="testimonials-1-author">
-                        <div class="testimonials-1-author-image">
-                          <img src="assets/images/dummy/test2.jpg" alt="" />
-                        </div>
-                        <div class="testimonials-1-author-title">Jane O.</div>
-                        <div class="testimonials-1-designation">Customer</div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Slide Item -->
-                  <div class="swiper-slide">
-                    <div class="testimonials-1-block">
-                      <div class="testimonials-1-top-content">
-                        <div class="testimonials-1-quote">
-                          <i class="flaticon-quotation"></i>
-                        </div>
-                        <div class="testimonials-1-desc">
-                          Their attention to detail and dedication to quality
-                          set them apart. The apartment complex they delivered
-                          exceeded my expectations in every way.
-                        </div>
-                      </div>
-                      <div class="testimonials-1-author">
-                        <div class="testimonials-1-author-image">
-                          <img src="assets/images/dummy/tes1.avif" alt="" />
-                        </div>
-                        <div class="testimonials-1-author-title">
-                          Michael T.
-                        </div>
-                        <div class="testimonials-1-designation">Customer</div>
-                      </div>
-                    </div>
-                  </div>
+                <div class="swiper-wrapper" id="testimony_display">
+                  <!-- testimony would be rendered here -->
                 </div>
               </div>
             </div>

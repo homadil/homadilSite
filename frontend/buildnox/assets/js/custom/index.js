@@ -13,6 +13,7 @@
         method: "GET",
         success: function (response) {
           // Sort by updatedAt descending and get the latest 5
+
           const sortedProjects = response
             .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
             .slice(0, 5);
@@ -21,20 +22,21 @@
           const projectDisplay = $("#project_display");
           // clear prev children
           projectDisplay.empty();
-
+          console.log(sortedProjects);
           sortedProjects.forEach((project) => {
             const projectHTML = `
-              <div class="swiper-slide" >
+              <div class="swiper-slide"" >
                 <div
                   class="project-1-column wow fadeInUp"
                   data-wow-delay=".2s"
                   data-wow-duration="1.5s"
+                  style="width:auto; height:300px;"
                 >
                   <div class="project-1-block">
                     <div class="project-1-image">
                       <img src="${url}/${
               project.show
-            }" style="width:100%; height:350px;"  alt="${project.title}" />
+            }" style="width:100%; height:300px;"  alt="${project.plot}" />
                       <div class="project-1-overlay">
                         <a
                           href="${url}/${project.show}"
@@ -42,12 +44,12 @@
                           data-fancybox="project-1"
                           ><i class="flaticon-zoom"></i
                         ></a>
-                        <a href="project-details.html?id=${project.id}"
+                        <a href="./pages/project-details.html?id=${project.id}"
                           ><i class="flaticon-link"></i
                         ></a>
                       </div>
                       <div class="project-1-content">
-                        <p class="project-1-cat">${project.title}</p>
+                        <p class="project-1-cat">${project.plot}</p>
                         <h4 class="project-1-title">${project.description.substring(
                           0,
                           20
@@ -58,6 +60,7 @@
                 </div>
               </div>
             `;
+
             projectDisplay.append(projectHTML);
           });
         },
@@ -134,35 +137,49 @@
         },
       });
 
-      const footer_form = $("#footer_form");
+      $.ajax({
+        url: `${url}/testimonies`,
+        method: "GET",
+        success: function (response) {
+          console.log(response);
 
-      const footer_btn = $("#footer_btn");
+          // Select #category_display container
+          const testimonyDisplay = $("#testimony_display");
+          // Generate HTML for each category
+          response.forEach((testimony) => {
+            const testimonyHTML = `
+            <div class="swiper-slide">
+                    <div class="testimonials-1-block">
+                      <div class="testimonials-1-top-content">
+                        <div class="testimonials-1-quote">
+                          <i class="flaticon-quotation"></i>
+                        </div>
+                        <div class="testimonials-1-desc">
+                         ${testimony.comment}
+                        </div>
+                      </div>
+                      <div class="testimonials-1-author">
+                        <div class="testimonials-1-author-image">
+                           <img src="${url + "/" + testimony.image}" alt="" />
+                        </div>
+                        <div class="testimonials-1-author-title">${
+                          testimony.name
+                        }</div>
+                        <div class="testimonials-1-designation">${
+                          testimony.position
+                        }</div>
+                      </div>
+                    </div>
+                  </div>
+            `;
 
-      footer_form.on("submit", (e) => {
-        e.preventDefault();
-        const footer_email = $("#footer_email").val();
-
-        // Disable the button and change text
-        footer_btn.prop("disabled", true);
-
-        $.ajax({
-          url: `${url}/extra/newsletter`,
-          method: "POST",
-          data: JSON.stringify({ email: footer_email }),
-          contentType: "application/json", // Set content type for JSON
-          success: function (response) {
-            alert(response.msg);
-            form[0].reset(); // Reset the form
-          },
-          error: function (xhr, status, error) {
-            console.log(error);
-            alert(error.message || error.msg || error);
-          },
-          complete: function () {
-            // Re-enable the button and reset text
-            footer_btn.text("Submit now").prop("disabled", false);
-          },
-        });
+            // Append the generated HTML to the container
+            testimonyDisplay.append(testimonyHTML);
+          });
+        },
+        error: function (xhr, status, error) {
+          console.error("Error fetching categories:", error);
+        },
       });
 
       //end

@@ -53,20 +53,25 @@ const Project = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Estates", // References the `Estates` table
-        key: "id", // The primary key in the `Estates` table
+        model: "Estates",
+        key: "id",
       },
-      onDelete: "CASCADE", // Optional: Adjust behavior on delete
-      onUpdate: "CASCADE", // Optional: Adjust behavior on update
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     },
     room_count: {
       type: DataTypes.INTEGER,
-      allowNull: true, // Optional depending on use case
+      allowNull: true,
     },
     status: {
       type: DataTypes.ENUM("Carcass", "DPC", "Non-DPC", "Only-Land"),
       allowNull: false,
       defaultValue: "Only-Land",
+    },
+    sold: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   {

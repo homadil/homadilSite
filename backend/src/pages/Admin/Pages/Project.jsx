@@ -8,12 +8,7 @@ import {
   TableRow,
   Button,
   Modal,
-  TextField,
-  Select,
-  MenuItem,
-  Chip,
-  FormControl,
-  InputLabel,
+  Switch,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -53,6 +48,7 @@ const Project = () => {
     address: "",
     status: "Carcass",
     deletePrevMedia: false,
+    sold: false,
   });
   const [openModal, setOpenModal] = useState(false);
   let [update, setUpdate] = useState(false);
@@ -141,8 +137,7 @@ const Project = () => {
   };
 
   const handleOpenModal = (project = false) => {
-    setOpenModal(true);
-    console.log(typeof project);
+    console.log(project);
     if (project) {
       console.log("it worked");
       setUpdate(true);
@@ -171,6 +166,7 @@ const Project = () => {
       setSelectedTags(project.Tags.map((t) => t.id));
     } else {
       setUpdate(false);
+      console.log("not worked");
       setCurrentProjectId(null);
       setFormData({
         plot: "",
@@ -188,13 +184,14 @@ const Project = () => {
         address: "",
         room_count: "",
         estate: "",
-        status: "",
+        status: "Carcass",
+        sold: "",
       });
       setSelectedCategories([]);
       setSelectedUrls([]);
       setSelectedTags([]);
-      setFormData({ ...formData, estate: "" });
     }
+    setOpenModal(true);
   };
 
   const handleCloseModal = () => {
@@ -297,6 +294,42 @@ const Project = () => {
     <Loader />;
   }
 
+  const handleSold = async (e, id) => {
+    e.preventDefault();
+
+    const value = e.target.checked; // Get the new sold value from the checkbox
+    e.target.disabled = true; // Disable the checkbox to prevent multiple clicks
+
+    try {
+      // Make the API request to update the sold status
+      const response = await apiRequest.put(`/projects/sold/${id}`, {
+        sold: value,
+      });
+
+      // Check if the response is valid
+      if (!response) {
+        throw new Error("Invalid response from the server.");
+      }
+
+      console.log("Response:", response);
+
+      // Update the form data state with the new sold value
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === id ? { ...project, sold: value } : project
+        )
+      );
+    } catch (error) {
+      // Log the error for debugging
+      console.error("Error updating sold status:", error);
+
+      // Optionally, show an error message to the user (e.g., using a toast notification)
+    } finally {
+      // Re-enable the checkbox
+      e.target.disabled = false;
+    }
+  };
+
   return (
     <div>
       <Helmet>
@@ -307,7 +340,7 @@ const Project = () => {
         className="m-2"
         variant="contained"
         color="primary"
-        onClick={() => handleOpenModal(null)}
+        onClick={() => handleOpenModal(false)}
       >
         Add <PlaylistAddIcon className="mx-2" />
       </Button>
@@ -317,6 +350,7 @@ const Project = () => {
             <TableRow>
               <TableCell>plot</TableCell>
               <TableCell>Description</TableCell>
+              <TableCell>Sold</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -324,7 +358,16 @@ const Project = () => {
             {projects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell>{project.plot}</TableCell>
-                <TableCell>{project.description}</TableCell>
+                <TableCell>
+                  {project.description.substring(0, 20)} ....
+                </TableCell>
+                <TableCell>
+                  <Switch
+                    checked={project.sold}
+                    onChange={(e) => handleSold(e, project.id)}
+                    color="primary"
+                  />
+                </TableCell>
                 <TableCell>
                   <Button
                     color="primary"

@@ -765,15 +765,18 @@
   $(document).ready(function () {
     const location = window.location.href;
     const indexPage = location.includes("index.html");
+    const notfound = location.includes("404.html");
 
     let path = null;
-    if (indexPage) {
+    if (indexPage || notfound) {
       path = "assets/js/data.json";
     } else {
       path = "../assets/js/data.json";
     }
     // Load the JSON file
     $.getJSON(path, function (data) {
+      const url = data.BackendURL;
+
       // Populate address
       $(".address").text(data.address);
 
@@ -815,6 +818,64 @@
 
       $(".link_linkedin").each(function () {
         $(this).attr("href", data.linkedin);
+      });
+
+      const footer_btn = $("#footer_btn");
+
+      $("#footer_form").on("submit", (e) => {
+        e.preventDefault();
+        const footer_email = $("#footer_email").val();
+
+        // Disable the button and change text
+        footer_btn.prop("disabled", true);
+
+        $.ajax({
+          url: `${url}/extra/newsletter`,
+          method: "POST",
+          data: JSON.stringify({ email: footer_email }),
+          contentType: "application/json", // Set content type for JSON
+          success: function (response) {
+            alert(response.msg);
+            form[0].reset(); // Reset the form
+          },
+          error: function (xhr, status, error) {
+            console.log(error);
+            alert(error.message || error.msg || error);
+          },
+          complete: function () {
+            // Re-enable the button and reset text
+            footer_btn.text("Submit now").prop("disabled", false);
+          },
+        });
+      });
+
+      const newletter_send_btn = $("#newletter_send_btn");
+
+      $("#newletter_send_form").on("submit", (e) => {
+        e.preventDefault();
+        const newletter_send_email = $("#newletter_send_email").val();
+
+        // Disable the button and change text
+        newletter_send_btn.prop("disabled", true);
+
+        $.ajax({
+          url: `${url}/extra/newsletter`,
+          method: "POST",
+          data: JSON.stringify({ email: newletter_send_email }),
+          contentType: "application/json", // Set content type for JSON
+          success: function (response) {
+            alert(response.msg);
+            form[0].reset(); // Reset the form
+          },
+          error: function (xhr, status, error) {
+            console.log(error);
+            alert(error.message || error.msg || error);
+          },
+          complete: function () {
+            // Re-enable the button and reset text
+            newletter_send_btn.text("Submit now").prop("disabled", false);
+          },
+        });
       });
     });
   });

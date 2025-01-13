@@ -174,7 +174,7 @@ Project.belongsToMany(Tag, { through: "ProjectTag", foreignKey: "project_id" });
 // Sync database
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: false, force: true }); // Use { force: true } to drop and recreate tables
+    await sequelize.sync({ alter: true }); // Use { force: true } to drop and recreate tables
     console.log("Database synchronized successfully.");
   } catch (error) {
     console.error("Error synchronizing database:", error);

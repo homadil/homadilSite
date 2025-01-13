@@ -39,6 +39,11 @@
       ]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script
     ><![endif]-->
     <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/lightgallery/css/lightgallery-bundle.min.css"
+    />
   </head>
 
   <body>
@@ -87,7 +92,7 @@
                           <a href="services.html">Services</a>
                         </li>
                         <li>
-                          <a href="projects2.html">Listing</a>
+                          <a href="estate.html">Listing</a>
                         </li>
                         <li>
                           <a href="blog-standard.html">News</a>
@@ -329,10 +334,15 @@
             <!-- Newsletter Widget -->
             <div class="newsletter-widget">
               <h4 class="fs_22 fw_medium mb_20">Newsletter Subscription</h4>
-              <form action="#">
-                <input type="email" placeholder="Enter Email Address" />
+              <form action="#" id="newletter_send_form">
+                <input
+                  type="email"
+                  id="newletter_send_email"
+                  placeholder="Enter Email Address"
+                />
                 <button
                   type="submit"
+                  id="newletter_send_btn"
                   class="btn-1 pt_18 pb_15 mb_4 pl_30 pr_30 ff_sec fw_bold tt_u fs_14 ls_1"
                 >
                   Subscribe Us <i class="flaticon-right-arrow-1"></i
@@ -391,17 +401,19 @@
           <span class="line-grid-5"></span>
         </div>
         <div class="banner-1-image-1 p_absolute b_0 r_0">
-          <img src="../assets/images/resource/building3.png" alt="" />
+          <img
+            id="show_display"
+            src="../assets/images/resource/building3.png"
+            alt=""
+          />
         </div>
         <div class="auto-container">
           <div class="p_relative text-center">
             <h1
-              class="c_light mb_10 fw_black fs_65 wow fadeInUp"
+              class="c_light mb_10 fw_black fs_65 wow fadeInUp estate_title"
               data-wow-delay=".2s"
               data-wow-duration="1.5s"
-            >
-              Project Details
-            </h1>
+            ></h1>
             <ul
               class="fs_18 d-flex justify-content-center c_light wow fadeInLeft"
               data-wow-delay=".5s"
@@ -427,64 +439,70 @@
                     class="w_30 h_2 theme-bg mr_10 d_iblock v_bottom"
                   ></span>
                 </h2>
+
+                <div class="projectdetails-1-text mb_30">
+                  <p id="show_description"></p>
+                </div>
               </div>
-              <div class="projectdetails-1-text mb_30">
-                <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantitum dolore mque laudantium, totam rem aperiam, eaque
-                  ipsa quae ab illo inventore veritatis et quasi architecto
-                  beatae vitae dict eaque ipsa quae ab illo inventore veritatis
-                  et quasi architecto. Nemo enim ipsam voluptatem quia voluptas
-                  sit aspernatur aut odit aut fugit, sed quia consequuntur magni
-                  dolores eos qui ratione voluptatem sequi nesciunt. Lorem ipsum
-                  dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                  minim veniam, quis nostrud exercitation ullamco laboris nisi
-                </p>
-              </div>
-              <h4 class="fw_bold fs_28 mb_20">The Challenge in Installation</h4>
-              <div class="projectdetails-1-text mb_30">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                  occaecat cupidatat non dolore magna aliqua. Ut enim ad minim
-                  veniam, quis nostrud exercitation ullamco proident, sunt in
-                  culpa qui officia deserunt mollit anim id est laborum. aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation.
-                </p>
-              </div>
-              <blockquote class="mb_30">
+
+              <!-- <blockquote class="mb_30">
                 <div class="projectdetails-1-quote-icon">
                   <img src="../assets/images/icons/quote.svg" alt="" />
                 </div>
-                <div class="projectdetails-1-author-text">
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                  occaecat cupidatat non dolore magna aliqua. Ut enim ad minim
-                  veniam, quis
+                <div
+                  class="projectdetails-1-author-text"
+                  id="quote_display"
+                ></div>
+              </blockquote> -->
+
+              <div id="estate_details">
+                <h2 class="fw_black fs_45">
+                  Estate Details
+                  <span
+                    class="w_30 h_2 theme-bg mr_10 d_iblock v_bottom"
+                  ></span>
+                </h2>
+                <div id="project_plot"></div>
+                <div id="project_room_count"></div>
+                <div id="project_budget"></div>
+                <div id="project_client"></div>
+                <div id="project_director"></div>
+                <div id="project_start_date"></div>
+                <div id="project_end_date"></div>
+                <div id="project_status"></div>
+                <div id="project_sold"></div>
+
+                <div>
+                  <h5 class="fw_black fs_22">Location</h5>
+
+                  <div id="project_country"></div>
+                  <div id="project_state"></div>
+                  <div id="project_city"></div>
+                  <div id="project_address"></div>
                 </div>
-                <cite class="projectdetails-1-author-name"
-                  >Micale John, Client</cite
-                >
-              </blockquote>
-              <h4 class="fw_bold fs_28 mb_20">The Final View of Project</h4>
-              <div class="projectdetails-1-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur.
+
+                <div>
+                  <h5 class="fw_black fs_22">Categories</h5>
+                  <ul id="project_categories"></ul>
+                </div>
+
+                <div>
+                  <h5 class="fw_black fs_22">Tags</h5>
+                  <ul id="project_tags"></ul>
+                </div>
               </div>
+
+              <div>
+                <h4 class="fw_bold fs_28 mb_20 estate_title"></h4>
+                <div class="projectdetails-1-text mb_30" id="content"></div>
+              </div>
+
+              <div id="imageViewer"></div>
+
+              <div id="downloan_btn"></div>
             </div>
             <div class="col-lg-6">
-              <div class="row">
+              <div class="row" id="projectContainer">
                 <div class="col-md-12">
                   <div class="mb_30">
                     <img src="../assets/images/gallery/gallery-47.jpg" alt="" />
@@ -642,12 +660,13 @@
                     Get latest updates and offers.
                   </p>
                   <div class="footer-newsletter mb_25">
-                    <form>
+                    <form id="footer_form">
                       <input
                         type="email"
+                        id="footer_email"
                         placeholder="Enter your email address"
                       />
-                      <button class="btn-1">
+                      <button class="btn-1" id="footer_btn">
                         <i class="fas fa-paper-plane"></i> <span></span>
                       </button>
                     </form>
@@ -730,5 +749,11 @@
 
     <script src="../assets/js/odometer.min.js"></script>
     <script src="../assets/js/script.js"></script>
+    <!-- LightGallery JS -->
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery/lightgallery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lg-thumbnail/lg-thumbnail.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lg-zoom/lg-zoom.min.js"></script>
+
+    <script src="../assets/js/custom/project_detail.js"></script>
   </body>
 </html>

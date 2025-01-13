@@ -9,7 +9,7 @@
 
       // Fetch projects from the backend
       $.ajax({
-        url: `${url}/projects`,
+        url: `${url}/estates`,
         method: "GET",
         success: function (response) {
           console.log(response);
@@ -37,7 +37,7 @@
                   <div class="project-1-image">
                     <img
                       src="${url + "/" + project.show}"
-                      alt="${project.title}"
+                      alt="${project.name}"
              
                       style="height:375px !important;"
                     />
@@ -47,7 +47,7 @@
                         class="project-1-icon"
                         data-fancybox="project-1"
                       ><i class="flaticon-zoom"></i></a>
-                      <a href="project-details.html?id=${project.id}"
+                      <a href="estate-details.html?id=${project.id}"
                       ><i class="flaticon-link"></i></a>
                     </div>
                     <div class="project-1-content">
@@ -55,7 +55,7 @@
                         0,
                         100
                       )} ....</p>
-                      <h4 class="project-1-title">${project.title}</h4>
+                      <h4 class="project-1-title">${project.name}</h4>
                     </div>
                   </div>
                 </div>

@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // app.use(cors({ origin: "http://localhost:3001" }));
 
 // Synchronize the database when the app starts
-// syncDatabase();
+syncDatabase();
 
 // all routes
 app.use("/auth", require("./routes/auth"));
