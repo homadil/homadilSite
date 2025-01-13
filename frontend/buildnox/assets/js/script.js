@@ -836,7 +836,7 @@
           contentType: "application/json", // Set content type for JSON
           success: function (response) {
             alert(response.msg);
-            form[0].reset(); // Reset the form
+            $("#footer_form")[0].reset(); // Reset the form
           },
           error: function (xhr, status, error) {
             console.log(error);
@@ -844,7 +844,7 @@
           },
           complete: function () {
             // Re-enable the button and reset text
-            footer_btn.text("Submit now").prop("disabled", false);
+            footer_btn.text("Submit").prop("disabled", false);
           },
         });
       });
@@ -865,7 +865,7 @@
           contentType: "application/json", // Set content type for JSON
           success: function (response) {
             alert(response.msg);
-            form[0].reset(); // Reset the form
+            $("#newletter_send_form")[0].reset(); // Reset the form
           },
           error: function (xhr, status, error) {
             console.log(error);
@@ -873,7 +873,7 @@
           },
           complete: function () {
             // Re-enable the button and reset text
-            newletter_send_btn.text("Submit now").prop("disabled", false);
+            newletter_send_btn.text("Submit").prop("disabled", false);
           },
         });
       });
