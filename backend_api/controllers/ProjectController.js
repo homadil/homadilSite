@@ -1,12 +1,12 @@
 const Project = require("../database/models/Project");
 const Media = require("../database/models/Media");
-const Location = require("../database/models/Location");
 const path = require("path");
 const Tag = require("../database/models/Tag");
 const Category = require("../database/models/Category");
 const Url = require("../database/models/Url");
 const Comment = require("../database/models/Comment");
 const Estate = require("../database/models/Estate");
+const Location = require("../database/models/Location");
 
 exports.create = async (req, res) => {
   const transaction = await Project.sequelize.transaction(); // Start a transaction
@@ -16,7 +16,6 @@ exports.create = async (req, res) => {
     // Step 0: Validate or fetch Estate
     let estate;
 
-    console.log(data.estate);
     if (data.estate) {
       estate = await Estate.findByPk(data.estate); // Validate estate exists
       if (!estate) {
@@ -24,25 +23,6 @@ exports.create = async (req, res) => {
       }
     } else {
       throw new Error("Estate ID is required");
-    }
-
-    // Step 1: Create or use existing location
-    let location;
-    if (data.location_id !== null) {
-      location = await Location.create(
-        {
-          country: data.country,
-          state: data.state,
-          city: data.city,
-          address: data.address,
-        },
-        { transaction }
-      );
-    } else {
-      location = await Location.findByPk(data.location_id);
-      if (!location) {
-        throw new Error("Invalid location_id");
-      }
     }
 
     // Step 2: Create the project
@@ -55,7 +35,7 @@ exports.create = async (req, res) => {
         end_date: data.end_date,
         client: data.client,
         director: data.director,
-        location_id: location.id,
+        point: data.point,
         budget: data.budget,
         room_count: data.room_count,
         status: data.status,
@@ -142,10 +122,6 @@ exports.getAll = async (req, res) => {
     const projects = await Project.findAll({
       include: [
         {
-          model: Location,
-          as: "location", // Ensure the alias matches what is defined in your association
-        },
-        {
           model: Category,
           through: { attributes: [] }, // Include categories via the ProjectCategories association
         },
@@ -191,13 +167,9 @@ exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Fetch project with associations
+    // Fetch project details
     const project = await Project.findByPk(id, {
       include: [
-        {
-          model: Location,
-          as: "location", // Ensure this alias matches your association definition
-        },
         {
           model: Category,
           through: { attributes: [] }, // Include categories via ProjectCategories association
@@ -224,7 +196,19 @@ exports.getById = async (req, res) => {
       return res.status(404).json({ message: "Project not found." });
     }
 
-    return res.status(200).json(project);
+    // Fetch estate details separately using the estateId
+    const estate = await Estate.findByPk(project.estateId);
+
+    const location = await Location.findByPk(estate.id);
+
+    // Add estate details to the project response
+    const projectWithEstate = {
+      ...project.toJSON(),
+      location: location ? location.toJSON() : null,
+      estate: estate ? estate.toJSON() : null,
+    };
+
+    return res.status(200).json(projectWithEstate);
   } catch (error) {
     console.error("Error fetching project:", error);
     return res.status(500).json({ message: "Error fetching project.", error });
@@ -253,38 +237,6 @@ exports.update = async (req, res) => {
       }
     } else {
       throw new Error("Estate ID is required");
-    }
-
-    // Step 1: Update or use existing location
-    let location;
-    if (data.location_id) {
-      // Find the existing location
-      location = await Location.findByPk(data.location_id);
-      if (!location) {
-        throw new Error("Invalid location_id");
-      }
-
-      // Update the existing location with new data
-      await location.update(
-        {
-          country: data.country || location.country,
-          state: data.state || location.state,
-          city: data.city || location.city,
-          address: data.address || location.address,
-        },
-        { transaction }
-      );
-    } else {
-      // Create a new location
-      location = await Location.create(
-        {
-          country: data.country,
-          state: data.state,
-          city: data.city,
-          address: data.address,
-        },
-        { transaction }
-      );
     }
 
     // If req.deletePrevMedia is true, delete all previous media associated with the project
@@ -326,7 +278,7 @@ exports.update = async (req, res) => {
         end_date: data.end_date || project.end_date,
         client: data.client || project.client,
         director: data.director || project.director,
-        location_id: location.id || project.location_id,
+        point: data.point || project.point,
         budget: data.budget || project.budget,
         room_count: data.room_count || project.room_count,
         status: data.status || project.status,

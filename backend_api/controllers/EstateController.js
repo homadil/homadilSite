@@ -2,12 +2,11 @@ const Estate = require("../database/models/Estate");
 const Media = require("../database/models/Media");
 const Location = require("../database/models/Location");
 const path = require("path");
-const Tag = require("../database/models/Tag");
 const Category = require("../database/models/Category");
-const Url = require("../database/models/Url");
 const Comment = require("../database/models/Comment");
 const EstateMedia = require("../database/models/EstateMedia");
 const Project = require("../database/models/Project");
+const fs = require("fs");
 
 exports.create = async (req, res) => {
   const transaction = await Estate.sequelize.transaction(); // Start a transaction
@@ -174,7 +173,6 @@ exports.update = async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body; // Retrieve data from the request body
-    console.log(data);
     // Find the Estate by ID
     const estate = await Estate.findByPk(id);
 
@@ -308,7 +306,7 @@ exports.update = async (req, res) => {
         transaction,
       });
 
-      await Estate.setCategories(categories, { transaction }); // Update categories
+      await estate.addCategories(categories, { transaction }); // Update categories
     }
 
     // Commit transaction after all updates

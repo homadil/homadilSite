@@ -12,7 +12,6 @@
         url: `${url}/estates`,
         method: "GET",
         success: function (response) {
-          console.log(response);
           // Sort by updatedAt descending
           const sortedProjects = response.sort(
             (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)

@@ -183,8 +183,6 @@ export default function BlogForm({
     newFormData.append("quote", formData.quote);
     newFormData.append("deletePrevMedia", formData.deletePrevMedia);
 
-    console.log(files);
-
     if (update) {
       put(newFormData, blog.id);
     } else {

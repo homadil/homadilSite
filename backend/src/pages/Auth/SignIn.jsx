@@ -30,7 +30,7 @@ export default function SignIn() {
         localStorage.setItem("user", JSON.stringify(res.user));
 
         setTimeout(() => {
-          navigate("/admin");
+          window.location.href = "/admin";
         }, 2000);
       })
       .catch((error) => {

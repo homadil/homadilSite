@@ -199,7 +199,7 @@
                     </figure>
                     <div class="text">
                       <a href="project-details.html?id=${project.id}"
-                        >${project.title}</a
+                        >${project.plot}</a
                       >
                     </div>
                     <div class="post-info">${projectDate}</div>

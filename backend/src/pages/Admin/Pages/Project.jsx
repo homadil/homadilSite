@@ -37,15 +37,11 @@ const Project = () => {
     end_date: "",
     client: "",
     director: "",
-    location_id: null,
+    point: "",
     budget: "",
     show: "",
-    country: "",
-    state: "",
-    city: "",
     estate: null,
     room_count: 0,
-    address: "",
     status: "Carcass",
     deletePrevMedia: false,
     sold: false,
@@ -139,7 +135,6 @@ const Project = () => {
   const handleOpenModal = (project = false) => {
     console.log(project);
     if (project) {
-      console.log("it worked");
       setUpdate(true);
       setCurrentProjectId(project.id);
       setFormData({
@@ -150,12 +145,8 @@ const Project = () => {
         end_date: new Date(project.end_date).toISOString().split("T")[0],
         client: project.client,
         director: project.director,
-        location_id: project.location_id,
         budget: project.budget,
-        country: project.location.country,
-        state: project.location.state,
-        city: project.location.city,
-        address: project.location.address,
+        point: project.point,
         room_count: project.room_count,
         estate: project?.estate?.id,
         status: project.status,
@@ -166,7 +157,6 @@ const Project = () => {
       setSelectedTags(project.Tags.map((t) => t.id));
     } else {
       setUpdate(false);
-      console.log("not worked");
       setCurrentProjectId(null);
       setFormData({
         plot: "",
@@ -176,12 +166,8 @@ const Project = () => {
         end_date: "",
         client: "",
         director: "",
-        location_id: null,
+        point: "",
         budget: "",
-        country: "",
-        state: "",
-        city: "",
-        address: "",
         room_count: "",
         estate: "",
         status: "Carcass",
@@ -247,11 +233,7 @@ const Project = () => {
     newFormData.append("client", formData.client);
     newFormData.append("budget", formData.budget);
     newFormData.append("director", formData.director);
-    newFormData.append("country", formData.country);
-    newFormData.append("state", formData.state);
-    newFormData.append("city", formData.city);
-    newFormData.append("address", formData.address);
-    newFormData.append("location_id", formData.location_id);
+    newFormData.append("point", formData.point);
     newFormData.append("show", formData.show);
     newFormData.append("estate", formData.estate);
     newFormData.append("deletePrevMedia", formData.deletePrevMedia);

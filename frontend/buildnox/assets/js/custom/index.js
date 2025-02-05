@@ -7,61 +7,77 @@
     $.getJSON(path, function (data) {
       const url = data.BackendURL;
 
-      // Fetch projects from the backend
       $.ajax({
         url: `${url}/projects`,
         method: "GET",
         success: function (response) {
-          // Sort by updatedAt descending and get the latest 5
-
           const sortedProjects = response
             .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
             .slice(0, 5);
 
-          // Generate HTML for each project and append it to #project_display
           const projectDisplay = $("#project_display");
-          // clear prev children
-          projectDisplay.empty();
+          projectDisplay.empty(); // Clear previous items
           console.log(sortedProjects);
+
           sortedProjects.forEach((project) => {
             const projectHTML = `
-              <div class="swiper-slide"" >
-                <div
-                  class="project-1-column wow fadeInUp"
-                  data-wow-delay=".2s"
-                  data-wow-duration="1.5s"
-                  style="width:auto; height:300px;"
-                >
-                  <div class="project-1-block">
-                    <div class="project-1-image">
-                      <img src="${url}/${
+        <div class="swiper-slide">
+          <div class="project-1-column wow fadeInUp"
+            data-wow-delay=".2s"
+            data-wow-duration="1.5s"
+            style="width:auto; height:300px;">
+            <div class="project-1-block">
+              <div class="project-1-image">
+                <img src="${url}/${
               project.show
-            }" style="width:100%; height:300px;"  alt="${project.plot}" />
-                      <div class="project-1-overlay">
-                        <a
-                          href="${url}/${project.show}"
-                          class="project-1-icon"
-                          data-fancybox="project-1"
-                          ><i class="flaticon-zoom"></i
-                        ></a>
-                        <a href="./pages/project-details.html?id=${project.id}"
-                          ><i class="flaticon-link"></i
-                        ></a>
-                      </div>
-                      <div class="project-1-content">
-                        <p class="project-1-cat">${project.plot}</p>
-                        <h4 class="project-1-title">${project.description.substring(
-                          0,
-                          20
-                        )}...</h4>
-                      </div>
-                    </div>
-                  </div>
+            }" style="width:100%; height:300px;" alt="${project.plot}" />
+                <div class="project-1-overlay">
+                  <a href="${url}/${
+              project.show
+            }" class="project-1-icon" data-fancybox="project-1">
+                    <i class="flaticon-zoom"></i>
+                  </a>
+                  <a href="./pages/project-details.html?id=${project.id}">
+                    <i class="flaticon-link"></i>
+                  </a>
+                </div>
+                <div class="project-1-content">
+                  <p class="project-1-cat">${project.plot}</p>
+                  <h4 class="project-1-title">${project.description.substring(
+                    0,
+                    20
+                  )}...</h4>
                 </div>
               </div>
-            `;
+            </div>
+          </div>
+        </div>
+      `;
 
             projectDisplay.append(projectHTML);
+          });
+
+          // **Initialize Swiper after adding elements**
+          new Swiper(".four-item-carousel", {
+            slidesPerView: 1, // Default for mobile
+            spaceBetween: 20,
+            loop: true,
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+            },
+            breakpoints: {
+              640: {
+                slidesPerView: 2, // Medium screens
+              },
+              1024: {
+                slidesPerView: 3, // Large screens
+              },
+            },
           });
         },
         error: function (xhr, status, error) {
@@ -143,42 +159,66 @@
         success: function (response) {
           console.log(response);
 
-          // Select #category_display container
+          // Select the #testimony_display container
           const testimonyDisplay = $("#testimony_display");
-          // Generate HTML for each category
+          testimonyDisplay.empty(); // Clear previous testimonies
+
           response.forEach((testimony) => {
             const testimonyHTML = `
-            <div class="swiper-slide">
-                    <div class="testimonials-1-block">
-                      <div class="testimonials-1-top-content">
-                        <div class="testimonials-1-quote">
-                          <i class="flaticon-quotation"></i>
-                        </div>
-                        <div class="testimonials-1-desc">
-                         ${testimony.comment}
-                        </div>
-                      </div>
-                      <div class="testimonials-1-author">
-                        <div class="testimonials-1-author-image">
-                           <img src="${url + "/" + testimony.image}" alt="" />
-                        </div>
-                        <div class="testimonials-1-author-title">${
-                          testimony.name
-                        }</div>
-                        <div class="testimonials-1-designation">${
-                          testimony.position
-                        }</div>
-                      </div>
-                    </div>
-                  </div>
-            `;
+        <div class="swiper-slide">
+          <div class="testimonials-1-block">
+            <div class="testimonials-1-top-content">
+              <div class="testimonials-1-quote">
+                <i class="flaticon-quotation"></i>
+              </div>
+              <div class="testimonials-1-desc">
+                ${testimony.comment}
+              </div>
+            </div>
+            <div class="testimonials-1-author">
+              <div class="testimonials-1-author-image">
+                <img src="${url + "/" + testimony.image}" alt="${
+              testimony.name
+            }" />
+              </div>
+              <div class="testimonials-1-author-title">${testimony.name}</div>
+              <div class="testimonials-1-designation">${
+                testimony.position
+              }</div>
+            </div>
+          </div>
+        </div>
+      `;
 
             // Append the generated HTML to the container
             testimonyDisplay.append(testimonyHTML);
           });
+
+          // **Initialize Swiper AFTER appending the testimonies**
+          new Swiper(".two-item-carousel", {
+            slidesPerView: 1, // Default for mobile
+            spaceBetween: 20,
+            loop: true,
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+            },
+            breakpoints: {
+              768: {
+                slidesPerView: 2, // Two items for tablets and larger screens
+              },
+              1024: {
+                slidesPerView: 2, // Ensure 2 per view for large screens
+              },
+            },
+          });
         },
         error: function (xhr, status, error) {
-          console.error("Error fetching categories:", error);
+          console.error("Error fetching testimonies:", error);
         },
       });
 

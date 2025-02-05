@@ -26,10 +26,6 @@ User.hasMany(Blog, { foreignKey: "user_id", as: "blog" });
 Blog.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
 // Define associations with alias
-Location.hasMany(Project, { foreignKey: "location_id", as: "projects" });
-Project.belongsTo(Location, { foreignKey: "location_id", as: "location" });
-
-// Define associations with alias
 Location.hasMany(Estate, { foreignKey: "location_id", as: "estate" });
 Estate.belongsTo(Location, { foreignKey: "location_id", as: "location" });
 
@@ -174,7 +170,7 @@ Project.belongsToMany(Tag, { through: "ProjectTag", foreignKey: "project_id" });
 // Sync database
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true, force: true }); // Use { force: true } to drop and recreate tables
+    await sequelize.sync({ alter: true }); // Use { force: true } to drop and recreate tables
     console.log("Database synchronized successfully.");
   } catch (error) {
     console.error("Error synchronizing database:", error);

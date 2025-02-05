@@ -33,13 +33,10 @@ const Project = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    location_id: {
-      type: DataTypes.INTEGER,
+    point: {
+      //direction to project
+      type: DataTypes.STRING,
       allowNull: true,
-      references: {
-        model: "locations",
-        key: "id",
-      },
     },
     budget: {
       type: DataTypes.DECIMAL(10, 2),

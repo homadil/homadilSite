@@ -83,6 +83,75 @@
           console.error("Error fetching teams:", error);
         },
       });
+
+      $.ajax({
+        url: `${url}/testimonies`,
+        method: "GET",
+        success: function (response) {
+          console.log(response);
+
+          // Select the #testimony_display container
+          const testimonyDisplay = $("#testimony_display");
+          testimonyDisplay.empty(); // Clear previous testimonies
+
+          response.forEach((testimony) => {
+            const testimonyHTML = `
+        <div class="swiper-slide">
+          <div class="testimonials-1-block">
+            <div class="testimonials-1-top-content">
+              <div class="testimonials-1-quote">
+                <i class="flaticon-quotation"></i>
+              </div>
+              <div class="testimonials-1-desc">
+                ${testimony.comment}
+              </div>
+            </div>
+            <div class="testimonials-1-author">
+              <div class="testimonials-1-author-image">
+                <img src="${url + "/" + testimony.image}" alt="${
+              testimony.name
+            }" />
+              </div>
+              <div class="testimonials-1-author-title">${testimony.name}</div>
+              <div class="testimonials-1-designation">${
+                testimony.position
+              }</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+            // Append the generated HTML to the container
+            testimonyDisplay.append(testimonyHTML);
+          });
+
+          // **Initialize Swiper AFTER appending the testimonies**
+          new Swiper(".two-item-carousel", {
+            slidesPerView: 1, // Default for mobile
+            spaceBetween: 20,
+            loop: true,
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+            },
+            breakpoints: {
+              768: {
+                slidesPerView: 2, // Two items for tablets and larger screens
+              },
+              1024: {
+                slidesPerView: 2, // Ensure 2 per view for large screens
+              },
+            },
+          });
+        },
+        error: function (xhr, status, error) {
+          console.error("Error fetching testimonies:", error);
+        },
+      });
     });
   });
 })(window.jQuery);

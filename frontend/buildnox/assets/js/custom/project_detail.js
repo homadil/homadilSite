@@ -28,7 +28,7 @@
         method: "GET",
         success: function (response) {
           // Set the estate title
-          console.log(response);
+
           const formatDate = (date) => {
             const options = { year: "numeric", month: "long", day: "numeric" };
             return new Date(date).toLocaleDateString("en-US", options);
@@ -69,6 +69,8 @@
           $("#project_city").text(`City: ${response?.location?.city}`);
           $("#project_address").text(`Address: ${response?.location?.address}`);
 
+          $("#project_location").text(`Point: ${response?.point}`);
+
           //category
           const categoryArray = response?.Categories;
           $("#project_categories").text(``);
@@ -88,16 +90,19 @@
           $("#project_tags").html(`<ul>${tagList}</ul>`);
 
           const showMedia = [response.show];
-          const additionalMedia = response.Media
-            ? response.Media.map((media) => media.url)
-            : [];
+          const additionalMedia =
+            response.Media.length > 0
+              ? response.Media.map((media) => {
+                  return media.path;
+                })
+              : [];
 
           const allMedia = [...showMedia, ...additionalMedia];
 
           initImageViewer(allMedia);
 
           $(".estate_title").each(function () {
-            $(this).text("plot " + response.plot);
+            $(this).text("Plot " + response.plot);
           });
 
           // Check if 'response.show' is valid before setting the image source

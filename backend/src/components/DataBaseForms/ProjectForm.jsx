@@ -92,36 +92,9 @@ export default function ProjectForm({
       />
 
       <TextField
-        label="Country"
-        name="country"
-        value={formData.country}
-        onChange={handleFormChange}
-        fullWidth
-        style={styleSheet.addGap}
-        required={update ? false : true}
-      />
-      <TextField
-        label="State"
-        name="state"
-        value={formData.state}
-        onChange={handleFormChange}
-        fullWidth
-        style={styleSheet.addGap}
-        required={update ? false : true}
-      />
-      <TextField
-        label="City"
-        name="city"
-        value={formData.city}
-        onChange={handleFormChange}
-        fullWidth
-        style={styleSheet.addGap}
-        required={update ? false : true}
-      />
-      <TextField
-        label="Address"
-        name="address"
-        value={formData.address}
+        label="Location"
+        name="point"
+        value={formData.point}
         onChange={handleFormChange}
         fullWidth
         style={styleSheet.addGap}
@@ -137,9 +110,6 @@ export default function ProjectForm({
         fullWidth
         required={update ? false : true}
         style={styleSheet.addGap}
-        InputLabelProps={{
-          shrink: true,
-        }}
       />
       <TextField
         label="End Date"
@@ -150,9 +120,6 @@ export default function ProjectForm({
         fullWidth
         required={update ? false : true}
         style={styleSheet.addGap}
-        InputLabelProps={{
-          shrink: true,
-        }}
       />
       <TextField
         label="Client"
@@ -161,7 +128,7 @@ export default function ProjectForm({
         style={styleSheet.addGap}
         onChange={handleFormChange}
         fullWidth
-        required={update ? false : true}
+        required={update ? false : false}
       />
       <TextField
         label="Director"
@@ -386,9 +353,9 @@ export default function ProjectForm({
         color="primary"
         sx={{ mt: 3 }}
         type="submit"
-        disabled={loader.project} // Disable button when loading
+        disabled={loader} // Disable button when loading
       >
-        {loader.project ? (
+        {loader ? (
           <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} /> // Spinner when loading
         ) : !update ? (
           "Add"

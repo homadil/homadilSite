@@ -1,5 +1,3 @@
-console.log(typeof $.fn.lightGallery);
-
 (function ($) {
   "use strict";
 
@@ -29,12 +27,10 @@ console.log(typeof $.fn.lightGallery);
         url: `${url}/estates/${id}`,
         method: "GET",
         success: function (response) {
-          console.log(response);
-
           const estateMedia = [response.show];
           const projectMedia = response.projects.map((project) => project.show);
           const additionalMedia = response.Media
-            ? response.Media.map((media) => media.url)
+            ? response.Media.map((media) => media.path)
             : [];
 
           const allMedia = [
@@ -98,46 +94,72 @@ console.log(typeof $.fn.lightGallery);
           $("#content").html(response.content);
 
           // Display projects dynamically
-          const projectContainer = $("#projectContainer"); // Assuming this is where you want to append the projects
-          projectContainer.empty(); // Clear any existing content
+          let projects = response.projects; // Store all projects
 
-          response.projects.forEach((project) => {
-            const projectStatus = project.sold
-              ? `<p style="color:red;">Sold</p>`
-              : `<p style="color:green;">Available</p>`;
+          function renderProjects(filteredProjects) {
+            const projectContainer = $("#projectContainer");
+            projectContainer.empty();
 
-            const projectHTML = `
-  <div class="col-lg-6" >
-    <div class="row">
-      <div class="col-md-12">
-        <div class="mb_30">
-          <img style="height:150px; border-radius:20px;" 
-               src="${url}/${project.show}" 
-               alt="${project.plot}" />
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="mb_30">
-          <div style="display:flex;  align-items:center;">
-            <p style="margin-right:60px;">plot ${project.plot}</p>
-            <div>${projectStatus}</div>
+            filteredProjects.forEach((project) => {
+              const projectStatus = project.sold
+                ? `<p style="color:red;">Sold</p>`
+                : `<p style="color:green;">Available</p>`;
+
+              const projectHTML = `
+        <div class="col-lg-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb_30">
+                <img style="height:150px; border-radius:20px;"
+                     src="${url}/${project.show}"
+                     alt="plot ${project.plot}" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="mb_30">
+                <div style="display:flex; align-items:center;">
+                  <p style="margin-right:60px;">Plot ${project.plot}</p>
+                  <div>${projectStatus}</div>
+                </div>
+                <h5>${project.description.substring(0, 20)}...</h5>
+                <a href="project-details.html?id=${project.id}" 
+                   class="btn btn-primary">
+                  <i class="fas fa-link"></i> View Project
+                </a>
+              </div>
+            </div>
           </div>
-          <h5>${project.description.substring(0, 20)}...</h5>
-          <a href="project-details.html?id=${project.id}" 
-             class="btn btn-primary">
-            <i class="fas fa-link"></i> View Project
-          </a>
         </div>
-      </div>
-    </div>
-  </div>
-`;
+      `;
 
-            projectContainer.append(projectHTML);
+              projectContainer.append(projectHTML);
+            });
+
+            $(".mb_30").hide().fadeIn(1000);
+          }
+
+          // Initial Render
+          renderProjects(projects);
+
+          // Search & Filter Functionality
+          $("#searchProject, #filterStatus").on("input change", function () {
+            const searchQuery = $("#searchProject").val().toLowerCase();
+            const filterStatus = $("#filterStatus").val();
+
+            const filteredProjects = projects.filter((project) => {
+              const matchesSearch = project.plot
+                .toLowerCase()
+                .includes(searchQuery);
+              const matchesStatus =
+                filterStatus === "all" ||
+                (filterStatus === "available" && !project.sold) ||
+                (filterStatus === "sold" && project.sold);
+
+              return matchesSearch && matchesStatus;
+            });
+
+            renderProjects(filteredProjects);
           });
-
-          // Add fade-in animation
-          $(".mb_30").hide().fadeIn(1000);
         },
         error: function (xhr, status, error) {
           console.error("Error fetching teams:", error);

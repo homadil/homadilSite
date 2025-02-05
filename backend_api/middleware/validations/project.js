@@ -33,7 +33,7 @@ exports.projectValidationRules = [
     .isString()
     .withMessage("Director name must be a string."),
   check("location_id").optional(),
-  check("estate").notEmpty(),
+  check("estate").notEmpty().withMessage("Estate is Required"),
   check("budget")
     .optional()
     .isDecimal()
