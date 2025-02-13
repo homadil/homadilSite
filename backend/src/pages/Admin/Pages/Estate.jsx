@@ -42,11 +42,11 @@ const Estate = () => {
     nearbyLocations: "",
     status: "pending",
     deletePrevMedia: false,
+    media: [],
   });
   const [openModal, setOpenModal] = useState(false);
   const [update, setUpdate] = useState(false);
   const [currentEstateId, setCurrentEstateId] = useState(null);
-  const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState({
     estate: false,
     category: false,
@@ -102,13 +102,14 @@ const Estate = () => {
         number_of_units: estate.number_of_units || "",
         director: estate.director || "",
         amenities: estate.amenities || "",
-        show: estates.show || "",
+        show: estate.show || "",
         content: estate.content || "",
         code: estate.code || "",
         nearbyLocations: estate.nearbyLocations || "",
         status: estate.status || "pending",
         location_id: estate.location_id || null,
         deletePrevMedia: false,
+        media: estate.Media,
       });
       // Reset selected options
       setSelectedCategories(estate.Categories.map((c) => c.id));
@@ -134,6 +135,7 @@ const Estate = () => {
         nearbyLocations: "",
         status: "pending",
         deletePrevMedia: false,
+        media: [],
       });
       setSelectedCategories([]);
     }
@@ -149,7 +151,6 @@ const Estate = () => {
   };
 
   function refresh() {
-    setFiles([]);
     setSelectedCategories([]);
     setLoader((prev) => ({ ...prev, estates: false }));
     setLoader((prev) => ({ ...prev, category: false }));
@@ -162,8 +163,8 @@ const Estate = () => {
     const newFormData = new FormData();
 
     // Append file objects
-    for (let i = 0; i < files.length; i++) {
-      newFormData.append("files", files[i]);
+    for (let i = 0; i < formData.media.length; i++) {
+      newFormData.append("files", formData.media[i]);
     }
 
     // Append category objects as JSON strings
@@ -194,6 +195,21 @@ const Estate = () => {
       parseInt(formData.number_of_units) || 0
     );
     newFormData.append("location_id", parseInt(formData.location_id) || null);
+
+    if (update) {
+      const media = estates.filter((item) => item.id == currentEstateId)[0]
+        .Media;
+      const filteredMedia = formData.media.filter(
+        (item) => item?.id != undefined
+      );
+      const mediaIds = media.map((item) => item.id);
+      const filteredMediaIds = filteredMedia.map((item) => item.id);
+
+      const missingIds = mediaIds.filter(
+        (id) => !filteredMediaIds.includes(id)
+      );
+      newFormData.append("delete_media", missingIds);
+    }
 
     try {
       if (update) {
@@ -300,8 +316,6 @@ const Estate = () => {
             selectedCategories={selectedCategories}
             setSelectedCategories={setSelectedCategories}
             categories={categories}
-            setFiles={setFiles}
-            files={files}
             handleCloseModal={handleCloseModal}
             handleSaveEstate={handleSaveEstate}
             loader={loader}

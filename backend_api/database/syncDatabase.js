@@ -54,20 +54,24 @@ Project.belongsToMany(Comment, {
 Comment.belongsToMany(Estate, {
   through: "EstateComment",
   foreignKey: "comment_id",
+  onDelete: "CASCADE",
 });
 Estate.belongsToMany(Comment, {
   through: "EstateComment",
   foreignKey: "estate_id",
+  onDelete: "CASCADE",
 });
 
 // Project <-> Media (Many-to-Many through ProjectMedia)
 Media.belongsToMany(Project, {
   through: "ProjectMedia",
   foreignKey: "media_id",
+  onDelete: "CASCADE",
 });
 Project.belongsToMany(Media, {
   through: "ProjectMedia",
   foreignKey: "project_id",
+  onDelete: "CASCADE",
 });
 
 // Estate <-> Media (Many-to-Many through EstateMedia)
@@ -77,6 +81,7 @@ Estate.belongsToMany(Media, {
     attributes: [],
   },
   foreignKey: "estate_id",
+  onDelete: "CASCADE",
 });
 
 Media.belongsToMany(Estate, {
@@ -85,40 +90,55 @@ Media.belongsToMany(Estate, {
     attributes: [],
   },
   foreignKey: "media_id",
+  onDelete: "CASCADE",
 });
 
 // Blog <-> Media (Many-to-Many through BlogMedia)
-Media.belongsToMany(Blog, { through: "BlogMedia", foreignKey: "media_id" });
-Blog.belongsToMany(Media, { through: "BlogMedia", foreignKey: "blog_id" });
+Media.belongsToMany(Blog, {
+  through: "BlogMedia",
+  foreignKey: "media_id",
+  onDelete: "CASCADE",
+});
+Blog.belongsToMany(Media, {
+  through: "BlogMedia",
+  foreignKey: "blog_id",
+  onDelete: "CASCADE",
+});
 
 // Category <-> Blog  (Many-to-Many)
 Category.belongsToMany(Blog, {
   through: "BlogCategories",
   foreignKey: "category_id",
+  onDelete: "CASCADE",
 });
 Blog.belongsToMany(Category, {
   through: "BlogCategories",
   foreignKey: "blog_id",
+  onDelete: "CASCADE",
 });
 
 // Category <->  Project (Many-to-Many)
 Category.belongsToMany(Project, {
   through: "ProjectCategories",
   foreignKey: "category_id",
+  onDelete: "CASCADE",
 });
 Project.belongsToMany(Category, {
   through: "ProjectCategories",
   foreignKey: "project_id",
+  onDelete: "CASCADE",
 });
 
 // Category <-> estate (Many-to-Many)
 Category.belongsToMany(Estate, {
   through: "EstateCategories",
   foreignKey: "category_id",
+  onDelete: "CASCADE",
 });
 Estate.belongsToMany(Category, {
   through: "EstateCategories",
   foreignKey: "estate_id",
+  onDelete: "CASCADE",
 });
 
 // Tag <-> Blog and Project (Many-to-Many)
@@ -170,7 +190,7 @@ Project.belongsToMany(Tag, { through: "ProjectTag", foreignKey: "project_id" });
 // Sync database
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true }); // Use { force: true } to drop and recreate tables
+    await sequelize.sync(); // Use { force: true, alter: true  } to drop and recreate tables
     console.log("Database synchronized successfully.");
   } catch (error) {
     console.error("Error synchronizing database:", error);

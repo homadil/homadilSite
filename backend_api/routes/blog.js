@@ -7,6 +7,7 @@ const isAdmin = require("../middleware/auth/isAdmin");
 const { blogValidationRules } = require("../middleware/validations/blog");
 const upload = require("../config/multerConfig");
 const validateComment = require("../middleware/validations/validateComment");
+const validateUpload = require("../middleware/validations/validateUpload");
 
 // CREATE - Add a new blog
 router.post(
@@ -28,6 +29,7 @@ router.get("/:id", Blogs.getById);
 router.put(
   "/:id",
   isAuth,
+  validateUpload,
   upload,
   blogValidationRules,
   returnValidation,

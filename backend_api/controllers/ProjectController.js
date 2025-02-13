@@ -7,6 +7,8 @@ const Url = require("../database/models/Url");
 const Comment = require("../database/models/Comment");
 const Estate = require("../database/models/Estate");
 const Location = require("../database/models/Location");
+const fs = require("fs");
+const sequelize = require("../database");
 
 exports.create = async (req, res) => {
   const transaction = await Project.sequelize.transaction(); // Start a transaction
@@ -240,16 +242,19 @@ exports.update = async (req, res) => {
     }
 
     // If req.deletePrevMedia is true, delete all previous media associated with the project
-    if (req.body.deletePrevMedia) {
+
+    const deletePrevMedia =
+      req.body.deletePrevMedia?.toString().toLowerCase() === "true";
+    if (deletePrevMedia) {
       await Media.destroy({
         where: { parent_id: project.id, type: "project" },
         transaction,
       });
     }
 
-    //delete blog.show if it exists
+    //delete project.show if it exists
     if (req.files["show"]) {
-      const filePath = path.join(__dirname, "public/images", blog.show);
+      const filePath = path.join(__dirname, "public/", project.show);
 
       // Check if the file exists before attempting to delete it
       fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -291,6 +296,35 @@ exports.update = async (req, res) => {
     );
 
     // Step 3: Handle media deletion based on conditions
+    const deleteMediaIds = req.body.delete_media
+      ? req.body.delete_media.split(",").map(Number) // Split by comma and convert to numbers
+      : [];
+    if (deleteMediaIds.length > 0) {
+      // Find media records to get file paths before deleting
+      const mediaFiles = await Media.findAll({
+        where: { id: deleteMediaIds },
+        attributes: ["path"], // Get only the file paths
+      });
+
+      // Delete from Media table
+      await Media.destroy({
+        where: { id: deleteMediaIds },
+      });
+
+      // Delete from the junction table (ProjectMedia)
+      await sequelize.getQueryInterface().bulkDelete("ProjectMedia", {
+        media_id: deleteMediaIds,
+      });
+
+      mediaFiles.forEach(({ path: filePath }) => {
+        const absolutePath = path.join(__dirname, "..", "public/", filePath);
+        fs.unlink(absolutePath, (err) => {
+          if (err) console.error(`Failed to delete file: ${absolutePath}`, err);
+        });
+      });
+
+      console.log("Deleted media:", deleteMediaIds);
+    }
 
     // Step 4: Upload new media files if provided
     if (req.files["files"] && req.files["files"].length > 0) {
@@ -305,7 +339,8 @@ exports.update = async (req, res) => {
           { transaction }
         );
       });
-      await Promise.all(mediaPromises);
+      const mediaFiles = await Promise.all(mediaPromises);
+      await project.addMedia(mediaFiles, { transaction });
     }
 
     // Step 5: Update categories (ProjectCategories)

@@ -7,6 +7,7 @@ const Comment = require("../database/models/Comment");
 const EstateMedia = require("../database/models/EstateMedia");
 const Project = require("../database/models/Project");
 const fs = require("fs");
+const sequelize = require("../database");
 
 exports.create = async (req, res) => {
   const transaction = await Estate.sequelize.transaction(); // Start a transaction
@@ -209,7 +210,9 @@ exports.update = async (req, res) => {
     }
 
     // If req.deletePrevMedia is true, delete all previous media associated with the Estate
-    if (req.body.deletePrevMedia) {
+    const deletePrevMedia =
+      req.body.deletePrevMedia?.toString().toLowerCase() === "true";
+    if (deletePrevMedia) {
       // First, delete the associations in the EstateMedia table
       await EstateMedia.destroy({
         where: { estate_id: estate.id },
@@ -225,7 +228,7 @@ exports.update = async (req, res) => {
 
     // Delete the previous `show` file if a new one is provided
     if (req.files["show"]) {
-      const filePath = path.join(__dirname, "public/images", estate.show);
+      const filePath = path.join(__dirname, "public/", estate.show);
 
       // Check if the file exists before attempting to delete it
       fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -265,7 +268,42 @@ exports.update = async (req, res) => {
       { where: { id }, transaction }
     );
 
-    // Step 3: Upload new media files if provided
+    // Step 3: Handle media deletion based on conditions
+    const deleteMediaIds = req.body.delete_media
+      ? req.body.delete_media.split(",").map(Number) // Split by comma and convert to numbers
+      : [];
+
+    console.log("deleteMediaIds", deleteMediaIds);
+
+    if (deleteMediaIds.length > 0) {
+      // Find media records to get file paths before deleting
+      const mediaFiles = await Media.findAll({
+        where: { id: deleteMediaIds },
+        attributes: ["path"], // Get only the file paths
+      });
+
+      // ✅ Step 1: Delete from the junction table (EstateMedia) FIRST
+      await sequelize.getQueryInterface().bulkDelete("EstateMedia", {
+        media_id: deleteMediaIds,
+      });
+
+      // ✅ Step 2: Delete from Media table
+      await Media.destroy({
+        where: { id: deleteMediaIds },
+      });
+
+      // ✅ Step 3: Delete media files from storage
+      mediaFiles.forEach(({ path: filePath }) => {
+        const absolutePath = path.join(__dirname, "..", "public/", filePath);
+        fs.unlink(absolutePath, (err) => {
+          if (err) console.error(`Failed to delete file: ${absolutePath}`, err);
+        });
+      });
+
+      console.log("Deleted media:", deleteMediaIds);
+    }
+
+    // Step 4: Upload new media files if provided
     if (req.files["files"] && req.files["files"].length > 0) {
       const mediaFiles = await Promise.all(
         req.files["files"].map((file) => {
@@ -291,7 +329,7 @@ exports.update = async (req, res) => {
       );
     }
 
-    // Step 4: Update categories (EstateCategories)
+    // Step 5: Update categories (EstateCategories)
     if (data.categories && data.categories.length > 0) {
       if (!Array.isArray(data.categories)) {
         data.categories = [data.categories];

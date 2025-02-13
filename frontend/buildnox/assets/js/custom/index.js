@@ -21,7 +21,7 @@
 
           sortedProjects.forEach((project) => {
             const projectHTML = `
-        <div class="swiper-slide">
+        <div class="swiper-slide" style="margin:4px;">
           <div class="project-1-column wow fadeInUp"
             data-wow-delay=".2s"
             data-wow-duration="1.5s"

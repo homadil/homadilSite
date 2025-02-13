@@ -877,6 +877,24 @@
           },
         });
       });
+
+      $(document).ready(function () {
+        var swiper = new Swiper(".swiper-container", {
+          loop: true,
+          slidesPerView: 1,
+          spaceBetween: 20,
+          navigation: {
+            nextEl: ".slider-button-next4",
+            prevEl: ".slider-button-prev4",
+          },
+        });
+      });
+
+      $(".swiper-container").each(function () {
+        if ($(this).hasClass("swiper-initialized")) {
+          this.swiper.destroy(true, true);
+        }
+      });
     });
   });
 })(window.jQuery);

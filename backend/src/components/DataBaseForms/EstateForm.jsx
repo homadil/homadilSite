@@ -5,19 +5,17 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
-  Input,
   InputLabel,
   MenuItem,
   Select,
   Switch,
   TextField,
   TextareaAutosize,
-  Typography,
 } from "@mui/material";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import React, { useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
 import QuillEditor from "../QuillEditor";
+import UploadFile from "../UploadFile";
+import UploadFiles from "../UploadFiles";
 
 export default function EstateForm({
   update,
@@ -27,8 +25,6 @@ export default function EstateForm({
   selectedCategories,
   setSelectedCategories,
   categories,
-  setFiles,
-  files,
   handleCloseModal,
   handleSaveEstate,
   loader,
@@ -36,15 +32,6 @@ export default function EstateForm({
   const styleSheet = {
     addGap: { margin: "6px" },
   };
-  const handleDrop = (acceptedFiles) => {
-    setFiles(acceptedFiles);
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop,
-    accept: formData.exe === "image" ? "image/*" : "video/*",
-    multiple: true,
-  });
 
   const [value, setValue] = useState(formData.content);
 
@@ -203,22 +190,12 @@ export default function EstateForm({
         rows="10"
       ></textarea>
 
-      <label className="d-flex justify-middle align-items-center">
-        <Typography variant="body1" style={{ wordWrap: "normal" }}>
-          Display
-        </Typography>
-        <Input
-          type="file"
-          label=" Display"
-          accept="image/*"
-          style={styleSheet.addGap}
-          className="form-control mt-3"
-          required={update ? false : true}
-          onChange={(e) => {
-            setFormData({ ...formData, show: e.target.files[0] });
-          }}
-        />
-      </label>
+      <UploadFile
+        formData={formData}
+        setFormData={setFormData}
+        style={styleSheet.addGap}
+        update={update}
+      />
 
       <FormControl>
         <InputLabel id="select-label">Select Option</InputLabel>
@@ -287,36 +264,14 @@ export default function EstateForm({
           label="Delete Previous Media" // Label for the switch
         />
       )}
-      {/* File Drag and Drop */}
-      <div
-        {...getRootProps()}
-        className={`dropzone border p-4 m-4 text-center mb-3 ${
-          isDragActive ? "bg-light" : ""
-        }`}
-        style={{ cursor: "pointer" }}
-      >
-        <input {...getInputProps()} required={update ? false : true} />
-        <p>
-          {isDragActive
-            ? "Drop the files here..."
-            : "Drag & drop files here, or click to select files"}
-        </p>
-        <InsertDriveFileIcon />
-      </div>
 
-      {/* Display Selected Files */}
-      {files.length > 0 && (
-        <div className="m-3">
-          <h5>Selected Files:</h5>
-          <ul className="list-group">
-            {files.map((file, idx) => (
-              <li key={idx} className="list-group-item">
-                {file.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <UploadFiles
+        formData={formData}
+        setFormData={setFormData}
+        style={styleSheet.addGap}
+        update={update}
+      />
+
       <Button
         variant="contained"
         style={styleSheet.addGap}

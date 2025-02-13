@@ -158,12 +158,20 @@ export default function ImageTemplate({
                 </video>
               )}
               <ImageListItemBar
-                title={item.parentData?.title}
+                title={
+                  item.parentData?.title ||
+                  item.parentData?.name ||
+                  item.parentData?.plot
+                }
                 subtitle={item.parentData?.description}
                 actionIcon={
                   <IconButton
                     sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                    aria-label={`info about ${item.parentData?.title}`}
+                    aria-label={`info about ${
+                      item.parentData?.title ||
+                      item.parentData?.name ||
+                      item.parentData?.plot
+                    }`}
                     className="d-flex gap-3"
                   >
                     <FontAwesomeIcon

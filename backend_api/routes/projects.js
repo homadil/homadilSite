@@ -6,6 +6,7 @@ const { returnValidation } = require("../middleware/validations");
 const isAdmin = require("../middleware/auth/isAdmin");
 const upload = require("../config/multerConfig");
 const validateComment = require("../middleware/validations/validateComment");
+const validateUpload = require("../middleware/validations/validateUpload");
 
 // CREATE - Add a new blog
 router.post(
@@ -27,6 +28,7 @@ router.get("/:id", Project.getById);
 // UPDATE (PUT) - Update an entire blog by ID
 router.put(
   "/:id",
+  validateUpload,
   upload,
   projectValidationRules,
   returnValidation,

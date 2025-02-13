@@ -39,6 +39,12 @@
       ]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script
     ><![endif]-->
     <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </head>
 
   <body>
@@ -1164,6 +1170,28 @@
       </div>
     </div>
     <!-- Scroll to top end -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var testimonySwiper = new Swiper(".two-item-carousel", {
+          slidesPerView: 1,
+          spaceBetween: 20,
+          loop: true,
+          navigation: {
+            nextEl: ".slider-button-next2",
+            prevEl: ".slider-button-prev2",
+          },
+          autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+          },
+          breakpoints: {
+            768: { slidesPerView: 2 }, // Two testimonials on tablets
+            1024: { slidesPerView: 2.5 }, // Larger screens
+          },
+        });
+      });
+    </script>
 
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>

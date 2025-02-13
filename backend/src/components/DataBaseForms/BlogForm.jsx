@@ -7,7 +7,6 @@ import {
   Select,
   InputLabel,
   FormControl,
-  Typography,
   FormControlLabel,
   Switch,
   Chip,
@@ -16,7 +15,8 @@ import {
 import QuillEditor from "../QuillEditor";
 import apiRequest from "../../apiRequest";
 import Loader from "../Loader";
-import { useDropzone } from "react-dropzone";
+import UploadFile from "../UploadFile";
+import UploadFiles from "../UploadFiles";
 
 export default function BlogForm({
   fetchBlogs,
@@ -28,7 +28,8 @@ export default function BlogForm({
     title: update ? blog?.title : "",
     description: update ? blog?.description : "",
     content: update ? blog?.content : "",
-    show: "",
+    show: update ? blog?.show : "",
+    media: update ? blog?.Media : [],
     quote: update ? blog?.quote : "",
     deletePrevMedia: false,
   });
@@ -44,8 +45,6 @@ export default function BlogForm({
   const [selectedTags, setSelectedTags] = useState(
     update ? blog.Tags.map((t) => t.id) : []
   );
-
-  const [files, setFiles] = useState([]);
   const [value, setValue] = useState(formData.content);
   const [loader, setLoader] = useState(false);
   const [loading, setLoading] = useState({
@@ -104,18 +103,7 @@ export default function BlogForm({
       });
   };
 
-  const handleDrop = (acceptedFiles) => {
-    setFiles(acceptedFiles);
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop,
-    name: "files",
-    multiple: true,
-  });
-
   function refresh() {
-    setFiles([]);
     setSelectedCategories([]);
     setSelectedTags([]);
     setSelectedUrls([]);
@@ -156,8 +144,8 @@ export default function BlogForm({
     const newFormData = new FormData();
 
     // Append file objects
-    for (let i = 0; i < files.length; i++) {
-      newFormData.append("files", files[i]);
+    for (let i = 0; i < formData.media.length; i++) {
+      newFormData.append("files", formData.media[i]);
     }
 
     // Append URL objects as JSON strings
@@ -182,6 +170,20 @@ export default function BlogForm({
     newFormData.append("show", formData.show);
     newFormData.append("quote", formData.quote);
     newFormData.append("deletePrevMedia", formData.deletePrevMedia);
+
+    if (update) {
+      const media = blog.Media;
+      const filteredMedia = formData.media.filter(
+        (item) => item?.id != undefined
+      );
+      const mediaIds = media.map((item) => item.id);
+      const filteredMediaIds = filteredMedia.map((item) => item.id);
+
+      const missingIds = mediaIds.filter(
+        (id) => !filteredMediaIds.includes(id)
+      );
+      newFormData.append("delete_media", missingIds);
+    }
 
     if (update) {
       put(newFormData, blog.id);
@@ -232,22 +234,12 @@ export default function BlogForm({
           onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
         />
 
-        <label className="d-flex">
-          <Typography variant="body1" style={{ wordWrap: "normal" }}>
-            Display Media
-          </Typography>
-          <input
-            type="file"
-            accept="image/*"
-            style={styleSheet.addGap}
-            name="show"
-            className="form-control mt-3"
-            required={update ? false : true}
-            onChange={(e) => {
-              setFormData({ ...formData, show: e.target.files[0] });
-            }}
-          />
-        </label>
+        <UploadFile
+          formData={formData}
+          setFormData={setFormData}
+          style={styleSheet.addGap}
+          update={update}
+        />
 
         <FormControl fullWidth>
           <InputLabel>Categories</InputLabel>
@@ -349,36 +341,12 @@ export default function BlogForm({
           />
         )}
 
-        {/* File Drag and Drop */}
-        <div
-          {...getRootProps()}
-          className={`dropzone border p-4 text-center mb-3 ${
-            isDragActive ? "bg-light" : ""
-          }`}
-          style={{ cursor: "pointer" }}
-        >
-          <input {...getInputProps()} required={update ? false : true} />
-          <p>
-            {isDragActive
-              ? "Drop the files here..."
-              : "Drag & drop files here, or click to select files"}
-          </p>
-          <p>Upload Files</p>
-        </div>
-
-        {/* Display Selected Files */}
-        {files.length > 0 && (
-          <div>
-            <h5>Selected Files:</h5>
-            <ul className="list-group">
-              {files.map((file, idx) => (
-                <li key={idx} className="list-group-item">
-                  {file.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <UploadFiles
+          formData={formData}
+          setFormData={setFormData}
+          style={styleSheet.addGap}
+          update={update}
+        />
 
         <Button
           variant="contained"

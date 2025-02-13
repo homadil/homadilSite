@@ -5,6 +5,9 @@ const Media = require("../database/models/Media");
 const Url = require("../database/models/Url");
 const User = require("../database/models/User");
 const Comment = require("../database/models/Comment");
+const sequelize = require("../database");
+const path = require("path");
+const fs = require("fs");
 
 // CREATE - Add a new blog
 exports.create = async (req, res) => {
@@ -179,7 +182,7 @@ exports.update = async (req, res) => {
 
     //delete blog.show if it exists
     if (req.files["show"]) {
-      const filePath = path.join(__dirname, "public/images", blog.show);
+      const filePath = path.join(__dirname, "public/", blog.show);
 
       // Check if the file exists before attempting to delete it
       fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -199,7 +202,9 @@ exports.update = async (req, res) => {
     }
 
     // If req.deletePrevMedia is true, delete all previous media associated with the blog
-    if (req.body.deletePrevMedia) {
+    const deletePrevMedia =
+      req.body.deletePrevMedia?.toString().toLowerCase() === "true";
+    if (deletePrevMedia) {
       await Media.destroy({
         where: { parent_id: blog.id, type: "blog" },
         transaction,
@@ -219,6 +224,37 @@ exports.update = async (req, res) => {
       },
       { transaction }
     );
+
+    // Step 3: Handle media deletion based on conditions
+    const deleteMediaIds = req.body.delete_media
+      ? req.body.delete_media.split(",").map(Number) // Split by comma and convert to numbers
+      : [];
+    if (deleteMediaIds.length > 0) {
+      // Find media records to get file paths before deleting
+      const mediaFiles = await Media.findAll({
+        where: { id: deleteMediaIds },
+        attributes: ["path"], // Get only the file paths
+      });
+
+      // Delete from Media table
+      await Media.destroy({
+        where: { id: deleteMediaIds },
+      });
+
+      // Delete from the junction table (ProjectMedia)
+      await sequelize.getQueryInterface().bulkDelete("BlogMedia", {
+        media_id: deleteMediaIds,
+      });
+
+      mediaFiles.forEach(({ path: filePath }) => {
+        const absolutePath = path.join(__dirname, "..", "public/", filePath);
+        fs.unlink(absolutePath, (err) => {
+          if (err) console.error(`Failed to delete file: ${absolutePath}`, err);
+        });
+      });
+
+      console.log("Deleted media:", deleteMediaIds);
+    }
 
     // Step 4: Upload new media files if provided
     if (req.files["files"] && req.files["files"].length > 0) {

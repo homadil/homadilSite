@@ -10,11 +10,11 @@ import {
   Select,
   Switch,
   TextField,
-  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
 import QuillEditor from "../QuillEditor";
+import UploadFile from "../UploadFile";
+import UploadFiles from "../UploadFiles";
 export default function ProjectForm({
   update,
   formData,
@@ -29,8 +29,6 @@ export default function ProjectForm({
   urls,
   setSelectedTags,
   tags,
-  setFiles,
-  files,
   handleCloseModal,
   handleSaveProject,
   loader,
@@ -39,21 +37,12 @@ export default function ProjectForm({
   const styleSheet = {
     addGap: { margin: "6px" },
   };
-  const handleDrop = (acceptedFiles) => {
-    setFiles(acceptedFiles);
-  };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleDrop,
-    accept: formData.exe === "image" ? "image/*" : "video/*",
-    multiple: true,
-  });
   const [value, setValue] = useState(formData.content);
 
   useEffect(() => {
     setFormData({ ...formData, content: value });
   }, [value]);
-
   return (
     <form
       onSubmit={handleSaveProject}
@@ -179,21 +168,12 @@ export default function ProjectForm({
         ))}
       </Select>
 
-      <label className="d-flex justify-middle align-items-center">
-        <Typography variant="body1" style={{ wordWrap: "normal" }}>
-          Media
-        </Typography>
-        <input
-          type="file"
-          accept="image/*"
-          style={styleSheet.addGap}
-          className="form-control mt-3"
-          required={update ? false : true}
-          onChange={(e) => {
-            setFormData({ ...formData, show: e.target.files[0] });
-          }}
-        />
-      </label>
+      <UploadFile
+        formData={formData}
+        setFormData={setFormData}
+        style={styleSheet.addGap}
+        update={update}
+      />
 
       <FormControl fullWidth>
         <InputLabel>Estate</InputLabel>
@@ -312,40 +292,12 @@ export default function ProjectForm({
         />
       )}
 
-      {/* File Drag and Drop */}
-      <div
-        {...getRootProps()}
-        className={`dropzone border p-4 mt-3 text-center mb-3 ${
-          isDragActive ? "bg-light" : ""
-        }`}
-        style={{ cursor: "pointer" }}
-      >
-        <input {...getInputProps()} required={update ? false : true} />
-        <p>
-          {isDragActive
-            ? "Drop the files here..."
-            : "Drag & drop files here, or click to select files"}
-        </p>
-        {formData.exe === "image" ? (
-          <p>Only images are allowed</p>
-        ) : (
-          <p>Only videos are allowed</p>
-        )}
-      </div>
-
-      {/* Display Selected Files */}
-      {files.length > 0 && (
-        <div>
-          <h5>Selected Files:</h5>
-          <ul className="list-group">
-            {files.map((file, idx) => (
-              <li key={idx} className="list-group-item">
-                {file.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <UploadFiles
+        formData={formData}
+        setFormData={setFormData}
+        style={styleSheet.addGap}
+        update={update}
+      />
 
       <Button
         variant="contained"

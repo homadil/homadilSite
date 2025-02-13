@@ -8,6 +8,7 @@ export default function UploadMedia() {
   const [medias, setMedias] = useState([]);
   const [blog, setBlog] = useState([]);
   const [project, setProject] = useState([]);
+  const [estate, setEstate] = useState([]);
   const [homeHeader, setHomeHeader] = useState([]);
   const [homeGrid, setHomeGrid] = useState([]);
   const [newsHeader, setNewsHeader] = useState([]);
@@ -28,7 +29,7 @@ export default function UploadMedia() {
   function updateFilteredMedia(medias) {
     // Filter for different media types
     setBlog(medias.filter((item) => item.type === "blog"));
-
+    setEstate(medias.filter((item) => item.type === "estate"));
     setProject(medias.filter((item) => item.type === "project"));
     setHomeHeader(medias.filter((item) => item.type === "home_header"));
     setHomeGrid(medias.filter((item) => item.type === "home_grid"));
@@ -61,7 +62,18 @@ export default function UploadMedia() {
             type={"blog"}
           />
         </li>
-        {/* Add similar sections for the other media types as needed */}
+
+        <li>
+          <ImageTemplate
+            medias={medias}
+            data={estate}
+            header="Estate"
+            setMedias={setMedias}
+            updateFilteredMedia={updateFilteredMedia}
+            type={"estate"}
+          />
+        </li>
+
         <li>
           <ImageTemplate
             medias={medias}

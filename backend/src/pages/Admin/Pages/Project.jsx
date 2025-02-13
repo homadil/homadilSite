@@ -40,6 +40,7 @@ const Project = () => {
     point: "",
     budget: "",
     show: "",
+    media: [],
     estate: null,
     room_count: 0,
     status: "Carcass",
@@ -49,7 +50,6 @@ const Project = () => {
   const [openModal, setOpenModal] = useState(false);
   let [update, setUpdate] = useState(false);
   const [currentProjectId, setCurrentProjectId] = useState(null);
-  const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState({
     project: false,
     category: false,
@@ -133,7 +133,6 @@ const Project = () => {
   };
 
   const handleOpenModal = (project = false) => {
-    console.log(project);
     if (project) {
       setUpdate(true);
       setCurrentProjectId(project.id);
@@ -150,6 +149,8 @@ const Project = () => {
         room_count: project.room_count,
         estate: project?.estate?.id,
         status: project.status,
+        show: project.show,
+        media: project.Media,
       });
       // Reset selected options
       setSelectedCategories(project.Categories.map((c) => c.id));
@@ -172,6 +173,8 @@ const Project = () => {
         estate: "",
         status: "Carcass",
         sold: "",
+        show: "",
+        media: [],
       });
       setSelectedCategories([]);
       setSelectedUrls([]);
@@ -190,7 +193,6 @@ const Project = () => {
   };
 
   function refresh() {
-    setFiles([]);
     setSelectedCategories([]);
     setSelectedTags([]);
     setSelectedUrls([]);
@@ -205,8 +207,8 @@ const Project = () => {
     const newFormData = new FormData();
 
     // Append file objects
-    for (let i = 0; i < files.length; i++) {
-      newFormData.append("files", files[i]);
+    for (let i = 0; i < formData.media.length; i++) {
+      newFormData.append("files", formData.media[i]);
     }
 
     // Append URL objects as JSON strings
@@ -239,6 +241,22 @@ const Project = () => {
     newFormData.append("deletePrevMedia", formData.deletePrevMedia);
     newFormData.append("room_count", formData.room_count);
     newFormData.append("status", formData.status);
+
+    if (update) {
+      const media = projects.filter((item) => item.id == currentProjectId)[0]
+        .Media;
+      const filteredMedia = formData.media.filter(
+        (item) => item?.id != undefined
+      );
+      const mediaIds = media.map((item) => item.id);
+      const filteredMediaIds = filteredMedia.map((item) => item.id);
+
+      const missingIds = mediaIds.filter(
+        (id) => !filteredMediaIds.includes(id)
+      );
+
+      newFormData.append("delete_media", missingIds);
+    }
 
     try {
       if (update) {
@@ -388,8 +406,6 @@ const Project = () => {
           urls={urls}
           setSelectedTags={setSelectedTags}
           tags={tags}
-          setFiles={setFiles}
-          files={files}
           handleCloseModal={handleCloseModal}
           handleSaveProject={handleSaveProject}
           loader={loader}
